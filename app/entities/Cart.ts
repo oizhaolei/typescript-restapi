@@ -12,7 +12,7 @@ export  class Cart {
     @Field(() => ID)
     id: string;  
 
-    @Field(_type => String)
+    @Field(_type => Product)
     @Property({ ref: Product, required: true })
     products: Ref<Product>;
     _doc: any;

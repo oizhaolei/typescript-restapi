@@ -57,6 +57,7 @@ input OrderInput {
   user_id: String!
   payde: Boolean!
   date: DateTime!
+  products: ID!
 }
 
 """The Product model"""

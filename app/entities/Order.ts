@@ -24,9 +24,9 @@ export  class Order {
     @Property({ default: new Date(), required: true, nullable: true })
     date: Date;
 
-    // @Field(_type => Product)
+    @Field(_type => Product)
     @Property({ ref: Product, required: true })
-    products: Ref<Product>
+    products: Ref<Product>;
     _doc: any;
 }
 

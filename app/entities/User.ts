@@ -20,7 +20,7 @@ export class User {
     @Property({ required: true })
     email: String;
 
-    @Field(_type => String)
+    @Field(_type => Cart)
     @Property({ ref: Cart, required: true})
     cart_id: Ref<Cart>
 }
