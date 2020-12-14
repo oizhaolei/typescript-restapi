@@ -40,7 +40,7 @@ export class UserResolver {
 
   @FieldResolver(_type => (Cart))
   async cart(@Root() user: User): Promise<Cart> {
-    console.log(user, "userr!")
+    // console.log(user, "user!")
     return (await CartModel.findById(user._doc.cart_id))!;
   }
 

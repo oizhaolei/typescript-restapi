@@ -6,7 +6,7 @@
 """The  Cart model"""
 type Cart {
   id: ID!
-  products: String!
+  products: Product!
   product: Product!
 }
 
@@ -98,7 +98,7 @@ type User {
   id: ID!
   username: String!
   email: String!
-  cart_id: String!
+  cart_id: Cart!
   cart: Cart!
 }
 

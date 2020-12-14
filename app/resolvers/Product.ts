@@ -42,7 +42,7 @@ export class ProductResolver {
 
   @FieldResolver(_type => (Categories))
   async category(@Root() product: Product): Promise<Categories> {
-    console.log(product, "product!")
+    // console.log(product, "product!")
     return (await CategoriesModel.findById(product._doc.category_id))!;
   }
 

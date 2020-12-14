@@ -1,4 +1,5 @@
-import { Resolver, Mutation, Arg, Query, FieldResolver, Root } from "type-graphql";
+import { Resolver, Mutation, Arg, Query, FieldResolver, Root, Ctx } from "type-graphql";
+
 import { Order, OrderModel } from "../entities/Order";
 import { OrderInput } from "./types/order-input"
 
@@ -15,7 +16,8 @@ export class OrderResolver {
   };
 
   @Query(() => [Order])
-  async returnAllOrder() {
+  async returnAllOrder(@Ctx() ctx: any) {
+    console.log('ctx.user', ctx.user);
     return await OrderModel.find();
   };
 
@@ -39,7 +41,7 @@ export class OrderResolver {
 
   @FieldResolver(_type => (Product))
   async products(@Root() order: Order): Promise<Product> {
-    console.log(order, "order!")
+    // console.log(order, "order!")
     return (await ProductModel.findById(order._doc.products))!;
   }
 

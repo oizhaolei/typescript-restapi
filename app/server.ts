@@ -30,7 +30,21 @@ const main = async () => {
 
 
 
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({ 
+    schema,
+    context: ({ req }) => {
+      // Get the user token from the headers.
+      const token = req.headers.authorization || '';
+      console.log('token', token);
+   
+      // add the user to the context
+      return { 
+        user: {
+          name: 'fake user',
+        },};
+    },
+   
+   });
 
   const app = Express();
 
