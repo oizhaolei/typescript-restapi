@@ -22,12 +22,12 @@ export class OrderResolver {
   };
 
   @Mutation(() => Order)
-  async createOrder(@Arg("data") { user_id, date, payde, products }: OrderInput): Promise<Order> {
+  async createOrder(@Arg("data") { user_id, date, payed, product }: OrderInput): Promise<Order> {
     const order = (await OrderModel.create({
       user_id,
       date,
-      payde,
-      products,
+      payed,
+      product,
     })).save();
     return order;
   };
@@ -40,9 +40,9 @@ export class OrderResolver {
 
 
   @FieldResolver(_type => (Product))
-  async products(@Root() order: Order): Promise<Product> {
+  async product(@Root() order: Order): Promise<Product> {
     // console.log(order, "order!")
-    return (await ProductModel.findById(order._doc.products))!;
+    return (await ProductModel.findById(order._doc.product))!;
   }
 
 

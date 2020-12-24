@@ -7,7 +7,7 @@ import { connect } from "mongoose";
 
 import { UserResolver } from "./resolvers/User";
 import { ProductResolver } from "./resolvers/Product";
-import { CategoriesResolver } from "./resolvers/Categories";
+import { CategoryResolver } from "./resolvers/Category";
 import { CartResolver } from "./resolvers/Cart";
 import { OrderResolver } from "./resolvers/Order";
 
@@ -18,7 +18,7 @@ import { OrderResolver } from "./resolvers/Order";
 const main = async () => {
 
   const schema = await buildSchema({
-    resolvers: [CategoriesResolver, ProductResolver, UserResolver, CartResolver, OrderResolver],
+    resolvers: [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver],
     emitSchemaFile: true,
     validate: false,
   });

@@ -1,10 +1,10 @@
 import { InputType, Field } from "type-graphql";
 import { Length } from "class-validator";
-import { Categories } from "../../entities/Categories";
+import { Category } from "../../entities/Category";
 
 
 @InputType()
-export class CategoriesInput implements Partial<Categories> {
+export class CategoryInput implements Partial<Category> {
  
   @Field()
   name: string;

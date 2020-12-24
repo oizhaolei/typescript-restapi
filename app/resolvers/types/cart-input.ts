@@ -10,6 +10,6 @@ import { ObjectId } from "mongodb";
 export class CartInput implements Partial<Cart> {
 
     @Field(()=> ID)
-    products: ObjectId;
+    product: ObjectId;
   
 }

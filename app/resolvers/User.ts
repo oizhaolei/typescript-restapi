@@ -21,11 +21,11 @@ export class UserResolver {
 
 
   @Mutation(() => User)
-  async createUser(@Arg("data") { username, email, cart_id }: UserInput): Promise<User> {
+  async createUser(@Arg("data") { username, email, cart }: UserInput): Promise<User> {
     const user = (await UserModel.create({
       username,
       email,
-      cart_id
+      cart
 
     })).save();
     return user;
@@ -41,7 +41,7 @@ export class UserResolver {
   @FieldResolver(_type => (Cart))
   async cart(@Root() user: User): Promise<Cart> {
     // console.log(user, "user!")
-    return (await CartModel.findById(user._doc.cart_id))!;
+    return (await CartModel.findById(user._doc.cart))!;
   }
 
 

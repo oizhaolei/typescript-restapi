@@ -17,6 +17,6 @@ export class UserInput implements Partial<User> {
   email: String;
 
   @Field(()=> ID)
-  cart_id: ObjectId;
+  cart: ObjectId;
   
 }

@@ -14,7 +14,7 @@ export  class Cart {
 
     @Field(_type => Product)
     @Property({ ref: Product, required: true })
-    products: Ref<Product>;
+    product: Ref<Product>;
     _doc: any;
 }
 

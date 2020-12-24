@@ -18,7 +18,7 @@ export  class Order {
 
     @Field()
     @Property({ required: true })
-    payde: Boolean;
+    payed: Boolean;
 
     @Field()
     @Property({ default: new Date(), required: true, nullable: true })
@@ -26,7 +26,7 @@ export  class Order {
 
     @Field(_type => Product)
     @Property({ ref: Product, required: true })
-    products: Ref<Product>;
+    product: Ref<Product>;
     _doc: any;
 }
 

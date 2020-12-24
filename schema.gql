@@ -6,22 +6,21 @@
 """The  Cart model"""
 type Cart {
   id: ID!
-  products: Product!
   product: Product!
 }
 
 input CartInput {
-  products: ID!
+  product: ID!
 }
 
-"""The Categories model"""
-type Categories {
+"""The Category model"""
+type Category {
   id: ID!
   name: String!
   description: String!
 }
 
-input CategoriesInput {
+input CategoryInput {
   name: String!
   description: String!
 }
@@ -36,7 +35,7 @@ type Mutation {
   deleteUser(id: String!): Boolean!
   createProduct(data: ProductInput!): Product!
   deleteProduct(id: String!): Boolean!
-  createCategory(data: CategoriesInput!): Categories!
+  createCategory(data: CategoryInput!): Category!
   deleteCategory(id: String!): Boolean!
   createCart(data: CartInput!): Cart!
   deleteCart(id: String!): Boolean!
@@ -48,16 +47,16 @@ type Mutation {
 type Order {
   id: ID!
   user_id: String!
-  payde: Boolean!
+  payed: Boolean!
   date: DateTime!
-  products: Product!
+  product: Product!
 }
 
 input OrderInput {
   user_id: String!
-  payde: Boolean!
+  payed: Boolean!
   date: DateTime!
-  products: ID!
+  product: ID!
 }
 
 """The Product model"""
@@ -68,8 +67,7 @@ type Product {
   color: String!
   stock: Int!
   price: Int!
-  category_id: String!
-  category: Categories!
+  category: Category!
 }
 
 input ProductInput {
@@ -78,7 +76,7 @@ input ProductInput {
   color: String!
   stock: Float!
   price: Float!
-  category_id: String!
+  category: ID!
 }
 
 type Query {
@@ -86,8 +84,8 @@ type Query {
   returnAllUsers: [User!]!
   returnSingleProduct(id: String!): Order!
   returnAllProduct: [Product!]!
-  returnSingleCategory(id: String!): Categories!
-  returnAllCategories: [Categories!]!
+  returnSingleCategory(id: String!): Category!
+  returnAllCategories: [Category!]!
   returnSingleCart(id: String!): Cart!
   returnAllCart: [Cart!]!
   returnAllOrder: [Order!]!
@@ -98,12 +96,11 @@ type User {
   id: ID!
   username: String!
   email: String!
-  cart_id: Cart!
   cart: Cart!
 }
 
 input UserInput {
   username: String!
   email: String!
-  cart_id: ID!
+  cart: ID!
 }

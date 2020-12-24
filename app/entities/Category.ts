@@ -4,8 +4,8 @@ import { prop as Property, getModelForClass } from "@typegoose/typegoose";
 
 
 
-@ObjectType({ description: "The Categories model" })
-export class Categories {
+@ObjectType({ description: "The Category model" })
+export class Category {
     @Field(()=> ID)
     id: string;  
 
@@ -19,6 +19,6 @@ export class Categories {
 }
 
 
-export const CategoriesModel = getModelForClass(Categories);
+export const CategoryModel = getModelForClass(Category);
 
 

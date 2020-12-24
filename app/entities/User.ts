@@ -22,7 +22,7 @@ export class User {
 
     @Field(_type => Cart)
     @Property({ ref: Cart, required: true})
-    cart_id: Ref<Cart>
+    cart: Ref<Cart>
 }
 
 

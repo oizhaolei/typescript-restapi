@@ -10,12 +10,12 @@ export class OrderInput implements Partial<Order> {
   user_id: String;
 
   @Field()
-  payde: Boolean;
+  payed: Boolean;
 
   @Field()
   date: Date;
 
   @Field(()=> ID)
-  products: ObjectId;
+  product: ObjectId;
 
 }

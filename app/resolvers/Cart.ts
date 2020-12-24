@@ -20,10 +20,10 @@ export class CartResolver {
   };
 
   @Mutation(() => Cart)
-  async createCart(@Arg("data") { products }: CartInput): Promise<Cart> {
+  async createCart(@Arg("data") { product }: CartInput): Promise<Cart> {
     const cart = (await CartModel.create({
 
-      products
+      product
 
     })).save();
     return cart;
@@ -39,7 +39,7 @@ export class CartResolver {
   @FieldResolver(_type => (Product))
   async product(@Root() cart: Cart): Promise<Product> {
     // console.log(cart, "cart!")
-    return (await ProductModel.findById(cart._doc.products))!;
+    return (await ProductModel.findById(cart._doc.product))!;
   }
 
 }

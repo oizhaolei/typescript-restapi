@@ -1,7 +1,7 @@
 import { ObjectType, Field, ID, Int } from "type-graphql";
 import { prop as Property, getModelForClass } from "@typegoose/typegoose";
 import { Ref } from "../types";
-import {Categories} from "./Categories";
+import {Category} from "./Category";
 import { __Type } from "graphql";
 
 @ObjectType({ description: "The Product model" })
@@ -29,9 +29,9 @@ export  class Product {
     @Property()
     price: number;
 
-    @Field(_type => String)
-    @Property({ref: Categories})
-    category_id: Ref<Categories>;
+    @Field(_type => Category)
+    @Property({ref: Category})
+    category: Ref<Category>;
     _doc: any;
 
 }

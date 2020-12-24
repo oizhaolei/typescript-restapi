@@ -2,7 +2,7 @@ import { Resolver, Mutation, Arg, Query, FieldResolver, Root } from "type-graphq
 import { Product, ProductModel } from "../entities/Product";
 import { ProductInput } from "./types/product-input"
 
-import { Categories, CategoriesModel } from "../entities/Categories";
+import { Category, CategoryModel } from "../entities/Category";
 
 
 
@@ -20,14 +20,14 @@ export class ProductResolver {
   };
 
   @Mutation(() => Product)
-  async createProduct(@Arg("data") { name, description, color, stock, price, category_id }: ProductInput): Promise<Product> {
+  async createProduct(@Arg("data") { name, description, color, stock, price, category }: ProductInput): Promise<Product> {
     const product = (await ProductModel.create({
       name,
       description,
       color,
       stock,
       price,
-      category_id
+      category
 
     })).save();
     return product;
@@ -40,10 +40,10 @@ export class ProductResolver {
   }
 
 
-  @FieldResolver(_type => (Categories))
-  async category(@Root() product: Product): Promise<Categories> {
+  @FieldResolver(_type => (Category))
+  async category(@Root() product: Product): Promise<Category> {
     // console.log(product, "product!")
-    return (await CategoriesModel.findById(product._doc.category_id))!;
+    return (await CategoryModel.findById(product._doc.category))!;
   }
 
 
