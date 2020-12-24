@@ -3,6 +3,7 @@ import { Resolver, Mutation, Arg, Query, FieldResolver, Root, Ctx } from "type-g
 import { Order, OrderModel } from "../entities/Order";
 import { OrderInput } from "./types/order-input"
 
+import { User, UserModel } from "../entities/User";
 import { Product, ProductModel } from "../entities/Product";
 
 
@@ -16,15 +17,15 @@ export class OrderResolver {
   };
 
   @Query(() => [Order])
-  async returnAllOrder(@Ctx() ctx: any) {
+  async returnAllOrders(@Ctx() ctx: any) {
     console.log('ctx.user', ctx.user);
     return await OrderModel.find();
   };
 
   @Mutation(() => Order)
-  async createOrder(@Arg("data") { user_id, date, payed, product }: OrderInput): Promise<Order> {
+  async createOrder(@Arg("data") { user, date, payed, product }: OrderInput): Promise<Order> {
     const order = (await OrderModel.create({
-      user_id,
+      user,
       date,
       payed,
       product,
@@ -36,6 +37,19 @@ export class OrderResolver {
   async deleteOrder(@Arg("id") id: string) {
     await OrderModel.deleteOne({ id });
     return true;
+  }
+
+  @Mutation(() => Boolean)
+  async deleteAllOrders() {
+    await OrderModel.deleteMany({});
+    return true;
+  }
+
+
+  @FieldResolver(_type => (User))
+  async user(@Root() order: Order): Promise<User> {
+    // console.log(order, "order!")
+    return (await UserModel.findById(order._doc.user))!;
   }
 
 

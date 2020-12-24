@@ -15,7 +15,7 @@ export class CartResolver {
   };
 
   @Query(() => [Cart])
-  async returnAllCart() {
+  async returnAllCarts() {
     return await CartModel.find();
   };
 
@@ -32,6 +32,12 @@ export class CartResolver {
   @Mutation(() => Boolean)
   async deleteCart(@Arg("id") id: string) {
     await CartModel.deleteOne({ id });
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async deleteAllCarts() {
+    await CartModel.deleteMany({});
     return true;
   }
 

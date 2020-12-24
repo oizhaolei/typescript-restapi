@@ -3,26 +3,25 @@ import { prop as Property, getModelForClass } from "@typegoose/typegoose";
 
 import { Ref } from "../types";
 
-import {Cart} from "./Cart";
+import { Cart } from "./Cart";
 
 
 @ObjectType({ description: "The User model" })
 export class User {
-  [x: string]: any;
-    @Field(() => ID)
-    id: number;  
+  @Field(() => ID)
+  id: String;  
 
-    @Field()
-    @Property({ required: true })
-    username: String;
+  @Field()
+  @Property({ required: true })
+  username: String;
 
-    @Field()
-    @Property({ required: true })
-    email: String;
+  @Field()
+  @Property({ required: true })
+  email: String;
 
-    @Field(_type => Cart)
-    @Property({ ref: Cart, required: true})
-    cart: Ref<Cart>
+  @Field(_type => Cart)
+  @Property({ ref: Cart, required: true })
+  cart: Ref<Cart>
 }
 
 

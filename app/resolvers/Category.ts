@@ -31,6 +31,12 @@ export class CategoryResolver {
     return true;
   }
 
+  @Mutation(() => Boolean)
+  async deleteAllCategories() {
+    await CategoryModel.deleteMany({});
+    return true;
+  }
+
 
 
 }

@@ -15,7 +15,7 @@ export class ProductResolver {
   };
 
   @Query(() => [Product])
-  async returnAllProduct() {
+  async returnAllProducts() {
     return await ProductModel.find();
   };
 
@@ -39,6 +39,12 @@ export class ProductResolver {
     return true;
   }
 
+
+  @Mutation(() => Boolean)
+  async deleteAllProducts() {
+    await ProductModel.deleteMany({});
+    return true;
+  }
 
   @FieldResolver(_type => (Category))
   async category(@Root() product: Product): Promise<Category> {

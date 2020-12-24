@@ -4,7 +4,8 @@ import { prop as Property, getModelForClass} from "@typegoose/typegoose";
 
 import { Ref } from "../types";
 
-import {Product} from "./Product";
+import { Product } from "./Product";
+import { User } from "./User";
 
 
 @ObjectType({ description: "The Order model" })
@@ -12,9 +13,9 @@ export  class Order {
     @Field(()=> ID)
     id: String;  
 
-    @Field()
-    @Property({ nullable: true })
-    user_id: String;
+    @Field(_type => User)
+    @Property({ ref: User, required: true })
+    user: Ref<User>;
 
     @Field()
     @Property({ required: true })

@@ -33,27 +33,32 @@ scalar DateTime
 type Mutation {
   createUser(data: UserInput!): User!
   deleteUser(id: String!): Boolean!
+  deleteAllUsers: Boolean!
   createProduct(data: ProductInput!): Product!
   deleteProduct(id: String!): Boolean!
+  deleteAllProducts: Boolean!
   createCategory(data: CategoryInput!): Category!
   deleteCategory(id: String!): Boolean!
+  deleteAllCategories: Boolean!
   createCart(data: CartInput!): Cart!
   deleteCart(id: String!): Boolean!
+  deleteAllCarts: Boolean!
   createOrder(data: OrderInput!): Order!
   deleteOrder(id: String!): Boolean!
+  deleteAllOrders: Boolean!
 }
 
 """The Order model"""
 type Order {
   id: ID!
-  user_id: String!
+  user: User!
   payed: Boolean!
   date: DateTime!
   product: Product!
 }
 
 input OrderInput {
-  user_id: String!
+  user: ID!
   payed: Boolean!
   date: DateTime!
   product: ID!
@@ -83,12 +88,12 @@ type Query {
   returnSingleUser(id: String!): User!
   returnAllUsers: [User!]!
   returnSingleProduct(id: String!): Order!
-  returnAllProduct: [Product!]!
+  returnAllProducts: [Product!]!
   returnSingleCategory(id: String!): Category!
   returnAllCategories: [Category!]!
   returnSingleCart(id: String!): Cart!
-  returnAllCart: [Cart!]!
-  returnAllOrder: [Order!]!
+  returnAllCarts: [Cart!]!
+  returnAllOrders: [Order!]!
 }
 
 """The User model"""

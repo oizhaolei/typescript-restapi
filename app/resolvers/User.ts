@@ -38,6 +38,12 @@ export class UserResolver {
   }
 
 
+  @Mutation(() => Boolean)
+  async deleteAllUsers() {
+    await UserModel.deleteMany({});
+    return true;
+  }
+
   @FieldResolver(_type => (Cart))
   async cart(@Root() user: User): Promise<Cart> {
     // console.log(user, "user!")

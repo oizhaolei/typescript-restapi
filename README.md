@@ -50,7 +50,7 @@ mutation createProduct {
       color: "red"
       stock: 22
       price: 3599
-      category: "5fe4802e49c317560b50e761"
+      category: "5fe4cfdf3b148950401b4ba8"
     }
   ) {
     id
@@ -70,8 +70,8 @@ mutation createProduct {
 ```
 
 ```
-query  returnAllProduct {
-  returnAllProduct {
+query  returnAllProducts {
+  returnAllProducts {
     id
     name
     description
@@ -89,7 +89,7 @@ query  returnAllProduct {
 
 ```
 mutation createCart {
-  createCart(data: { product: "5fe482b2c4a3845bf6d0edff" }) {
+  createCart(data: { product: "5fe4cfff3b148950401b4ba9" }) {
     id
     product {
       id
@@ -102,8 +102,8 @@ mutation createCart {
 ```
 
 ```
-query returnAllCart {
-  returnAllCart {
+query returnAllCarts {
+  returnAllCarts {
     id
     product {
       id
@@ -120,7 +120,7 @@ mutation createUser {
   createUser(data: {
     username: "zhaolei",
     email: "oizhaolei@gmail.com"
-    cart: "5fd725c3f05ee11d16ebca41"
+    cart: "5fe4d0193b148950401b4baa"
   }) {
     id
     username
@@ -129,6 +129,12 @@ mutation createUser {
       id
     }
   }
+}
+```
+
+```
+mutation deleteUser {
+  deleteUser(id: "5fe4d0353b148950401b4bab")
 }
 ```
 
@@ -147,14 +153,20 @@ query returnAllUsers {
 
 ```
 mutation createOrder {
-  createOrder(data: {
-    user_id: "5fd72666f05ee11d16ebca42",
-    date: "2020/12/12",
-    payed: false,
-    product: "5fe482b2c4a3845bf6d0edff"
-  }) {
+  createOrder(
+    data: {
+      user: "5fe4d0353b148950401b4bab"
+      date: "2020/12/12"
+      payed: false
+      product: "5fe4cfff3b148950401b4ba9"
+    }
+  ) {
     id
-    user_id
+    user {
+      id
+      username
+      email
+    }
     date
     payed
     product {
@@ -163,13 +175,20 @@ mutation createOrder {
     }
   }
 }
+
 ```
 
 ```
-query returnAllOrder {
-  returnAllOrder {
+mutation deleteOrder {
+  deleteOrder(id: "5fe4a0aa8f201b014c6d7b42")
+}
+```
+
+```
+query returnAllOrders {
+  returnAllOrders {
     id
-    user_id
+    user
     payed
     date
     product {

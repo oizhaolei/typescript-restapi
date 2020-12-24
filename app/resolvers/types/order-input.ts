@@ -6,8 +6,8 @@ import { ObjectId } from "mongodb";
 @InputType()
 export class OrderInput implements Partial<Order> {
 
-  @Field()
-  user_id: String;
+  @Field(()=> ID)
+  user: ObjectId;
 
   @Field()
   payed: Boolean;
