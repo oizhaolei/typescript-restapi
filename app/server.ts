@@ -10,15 +10,19 @@ import { ProductResolver } from "./resolvers/Product";
 import { CategoryResolver } from "./resolvers/Category";
 import { CartResolver } from "./resolvers/Cart";
 import { OrderResolver } from "./resolvers/Order";
+import { RecipeResolver } from "./resolvers/Recipe";
+import { RateResolver } from "./resolvers/Rate";
+import { User } from "./entities/User";
 
-
-
+export interface Context {
+  user: User;
+}
 
 
 const main = async () => {
 
   const schema = await buildSchema({
-    resolvers: [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver],
+    resolvers: [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver, RecipeResolver, RateResolver],
     emitSchemaFile: true,
     validate: false,
   });

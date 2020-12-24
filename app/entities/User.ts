@@ -22,6 +22,7 @@ export class User {
   @Field(_type => Cart)
   @Property({ ref: Cart, required: true })
   cart: Ref<Cart>
+  _doc: any;
 }
 
 
