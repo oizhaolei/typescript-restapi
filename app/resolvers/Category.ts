@@ -18,10 +18,11 @@ export class CategoryResolver {
   
     @Mutation(() => Category)
     async createCategory(@Arg("data"){name,description}: CategoryInput): Promise<Category> { 
-      const category = (await CategoryModel.create({      
-          name,
-          description
-      })).save();
+      const category = new CategoryModel({      
+        name,
+        description
+      });
+      await category.save();
       return category;
     };
 

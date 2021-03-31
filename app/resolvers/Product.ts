@@ -21,7 +21,7 @@ export class ProductResolver {
 
   @Mutation(() => Product)
   async createProduct(@Arg("data") { name, description, color, stock, price, category }: ProductInput): Promise<Product> {
-    const product = (await ProductModel.create({
+    const product = new ProductModel({
       name,
       description,
       color,
@@ -29,7 +29,8 @@ export class ProductResolver {
       price,
       category
 
-    })).save();
+    });
+    await product.save();
     return product;
   };
 

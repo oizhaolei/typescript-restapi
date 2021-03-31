@@ -21,11 +21,12 @@ export class CartResolver {
 
   @Mutation(() => Cart)
   async createCart(@Arg("data") { product }: CartInput): Promise<Cart> {
-    const cart = (await CartModel.create({
+    const cart = new CartModel({
 
       product
 
-    })).save();
+    });
+    await cart.save();
     return cart;
   };
 

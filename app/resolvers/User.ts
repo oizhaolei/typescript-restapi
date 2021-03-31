@@ -22,12 +22,13 @@ export class UserResolver {
 
   @Mutation(() => User)
   async createUser(@Arg("data") { username, email, cart }: UserInput): Promise<User> {
-    const user = (await UserModel.create({
+    const user = new UserModel({
       username,
       email,
       cart
 
-    })).save();
+    });
+    await user.save();
     return user;
   };
 

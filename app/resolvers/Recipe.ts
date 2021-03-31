@@ -6,7 +6,7 @@ import { Rate } from "../entities/Rate";
 import { User, UserModel } from "../entities/User";
 import { RecipeInput } from "./types/recipe-input";
 import { RateInput } from "./types/rate-input";
-import { Context } from "../server";
+import { Context } from "../app";
 import { ObjectIdScalar } from "../object-id.scalar";
 
 @Resolver(_of => Recipe)

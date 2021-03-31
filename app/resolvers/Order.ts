@@ -24,12 +24,13 @@ export class OrderResolver {
 
   @Mutation(() => Order)
   async createOrder(@Arg("data") { user, date, payed, product }: OrderInput): Promise<Order> {
-    const order = (await OrderModel.create({
+    const order = new OrderModel({
       user,
       date,
       payed,
       product,
-    })).save();
+    });
+    await order.save();
     return order;
   };
 
