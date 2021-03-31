@@ -1,42 +1,38 @@
-import { ObjectType, Field, ID, Int } from "type-graphql";
-import { prop as Property, getModelForClass } from "@typegoose/typegoose";
-import { Ref } from "../types";
-import {Category} from "./Category";
-import { __Type } from "graphql";
+import { ObjectType, Field, ID, Int } from 'type-graphql';
+import { prop as Property, getModelForClass } from '@typegoose/typegoose';
+import { Ref } from '../types';
+import { Category } from './Category';
+import { __Type } from 'graphql';
 
-@ObjectType({ description: "The Product model" })
-export  class Product {
-    @Field(() => ID)
-    id: String;  
+@ObjectType({ description: 'The Product model' })
+export class Product {
+  @Field(() => ID)
+  id: string;
 
-    @Field()
-    @Property()
-    name: String;
+  @Field()
+  @Property()
+  name: string;
 
-    @Field()
-    @Property()
-    description: String;
+  @Field()
+  @Property()
+  description: string;
 
-    @Field()
-    @Property()
-    color: String;
+  @Field()
+  @Property()
+  color: string;
 
-    @Field(_type => Int)
-    @Property()
-    stock: number;
+  @Field(_type => Int)
+  @Property()
+  stock: number;
 
-    @Field(_type => Int)
-    @Property()
-    price: number;
+  @Field(_type => Int)
+  @Property()
+  price: number;
 
-    @Field(_type => Category)
-    @Property({ref: Category})
-    category: Ref<Category>;
-    _doc: any;
-
+  @Field(_type => Category)
+  @Property({ ref: Category })
+  category: Ref<Category>;
+  _doc: any;
 }
 
-
 export const ProductModel = getModelForClass(Product);
-
-

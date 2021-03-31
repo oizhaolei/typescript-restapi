@@ -1,21 +1,18 @@
-import { InputType, Field, ID } from "type-graphql";
-import { Order } from "../../entities/Order";
-import { ObjectId } from "mongodb";
-
+import { InputType, Field, ID } from 'type-graphql';
+import { Order } from '../../entities/Order';
+import { ObjectId } from 'mongodb';
 
 @InputType()
 export class OrderInput implements Partial<Order> {
-
-  @Field(()=> ID)
+  @Field(() => ID)
   user: ObjectId;
 
   @Field()
-  payed: Boolean;
+  payed: boolean;
 
   @Field()
   date: Date;
 
-  @Field(()=> ID)
+  @Field(() => ID)
   product: ObjectId;
-
 }

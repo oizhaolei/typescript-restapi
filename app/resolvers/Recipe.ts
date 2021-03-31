@@ -1,18 +1,18 @@
-import { ObjectId } from "mongodb";
-import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx } from "type-graphql";
+import { ObjectId } from 'mongodb';
+import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx } from 'type-graphql';
 
-import { Recipe, RecipeModel } from "../entities/Recipe";
-import { Rate } from "../entities/Rate";
-import { User, UserModel } from "../entities/User";
-import { RecipeInput } from "./types/recipe-input";
-import { RateInput } from "./types/rate-input";
-import { Context } from "../app";
-import { ObjectIdScalar } from "../object-id.scalar";
+import { Recipe, RecipeModel } from '../entities/Recipe';
+import { Rate } from '../entities/Rate';
+import { User, UserModel } from '../entities/User';
+import { RecipeInput } from './types/recipe-input';
+import { RateInput } from './types/rate-input';
+import { Context } from '../app';
+import { ObjectIdScalar } from '../object-id.scalar';
 
 @Resolver(_of => Recipe)
 export class RecipeResolver {
   @Query(_returns => Recipe, { nullable: true })
-  recipe(@Arg("recipeId", _type => ObjectIdScalar) recipeId: ObjectId) {
+  recipe(@Arg('recipeId', _type => ObjectIdScalar) recipeId: ObjectId) {
     return RecipeModel.findById(recipeId);
   }
 
@@ -22,10 +22,7 @@ export class RecipeResolver {
   }
 
   @Mutation(_returns => Recipe)
-  async addRecipe(
-    @Arg("recipe") recipeInput: RecipeInput,
-    @Ctx() { user }: Context,
-  ): Promise<Recipe> {
+  async addRecipe(@Arg('recipe') recipeInput: RecipeInput, @Ctx() { user }: Context): Promise<Recipe> {
     const recipe = new RecipeModel({
       ...recipeInput,
       author: user,
@@ -36,11 +33,11 @@ export class RecipeResolver {
   }
 
   @Mutation(_returns => Recipe)
-  async rate(@Arg("rate") rateInput: RateInput, @Ctx() { user }: Context): Promise<Recipe> {
+  async rate(@Arg('rate') rateInput: RateInput, @Ctx() { user }: Context): Promise<Recipe> {
     // find the recipe
     const recipe = await RecipeModel.findById(rateInput.recipeId);
     if (!recipe) {
-      throw new Error("Invalid recipe ID");
+      throw new Error('Invalid recipe ID');
     }
 
     // set the new recipe rate

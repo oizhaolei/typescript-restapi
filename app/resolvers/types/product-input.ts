@@ -1,23 +1,19 @@
-import { InputType, Field, ID } from "type-graphql";
-import { Length } from "class-validator";
-import { Product } from "../../entities/Product";
-import { ObjectId } from "mongodb";
-
-
-
+import { InputType, Field, ID } from 'type-graphql';
+import { Length } from 'class-validator';
+import { Product } from '../../entities/Product';
+import { ObjectId } from 'mongodb';
 
 @InputType()
 export class ProductInput implements Partial<Product> {
-
   @Field()
-  name: String;
+  name: string;
 
   @Field()
   @Length(1, 255)
-  description: String;
+  description: string;
 
   @Field()
-  color: String;
+  color: string;
 
   @Field()
   stock: number;
@@ -25,7 +21,6 @@ export class ProductInput implements Partial<Product> {
   @Field()
   price: number;
 
-  @Field(()=> ID)
+  @Field(() => ID)
   category: ObjectId;
-  
 }

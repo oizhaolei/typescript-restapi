@@ -1,7 +1,7 @@
-import { prop as Property } from "@typegoose/typegoose";
-import { ObjectType, Field, Int }  from "type-graphql";
-import { User } from "./User";
-import { Ref } from "../types";
+import { prop as Property } from '@typegoose/typegoose';
+import { ObjectType, Field, Int } from 'type-graphql';
+import { User } from './User';
+import { Ref } from '../types';
 
 @ObjectType()
 export class Rate {

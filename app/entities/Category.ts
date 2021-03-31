@@ -1,24 +1,18 @@
-import { ObjectType, Field, ID } from "type-graphql";
-import { prop as Property, getModelForClass } from "@typegoose/typegoose";
+import { ObjectType, Field, ID } from 'type-graphql';
+import { prop as Property, getModelForClass } from '@typegoose/typegoose';
 
-
-
-
-@ObjectType({ description: "The Category model" })
+@ObjectType({ description: 'The Category model' })
 export class Category {
-    @Field(()=> ID)
-    id: string;  
+  @Field(() => ID)
+  id: string;
 
-    @Field()
-    @Property()
-    name: String;
+  @Field()
+  @Property()
+  name: string;
 
-    @Field()
-    @Property()
-    description: String;
+  @Field()
+  @Property()
+  description: string;
 }
 
-
 export const CategoryModel = getModelForClass(Category);
-
-

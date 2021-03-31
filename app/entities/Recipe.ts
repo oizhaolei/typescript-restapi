@@ -1,14 +1,14 @@
-import { prop as Property, getModelForClass } from "@typegoose/typegoose";
-import { Field, ObjectType, ID } from "type-graphql";
+import { prop as Property, getModelForClass } from '@typegoose/typegoose';
+import { Field, ObjectType, ID } from 'type-graphql';
 
-import { Rate } from "./Rate";
-import { User } from "./User";
-import { Ref } from "../types";
+import { Rate } from './Rate';
+import { User } from './User';
+import { Ref } from '../types';
 
 @ObjectType()
 export class Recipe {
   @Field(() => ID)
-  id: String;  
+  id: string;
 
   @Field()
   @Property({ required: true })

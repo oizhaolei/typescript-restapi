@@ -1,7 +1,7 @@
-import { Resolver, FieldResolver, Root } from "type-graphql";
+import { Resolver, FieldResolver, Root } from 'type-graphql';
 
-import { Rate } from "../entities/Rate";
-import { User, UserModel } from "../entities/User";
+import { Rate } from '../entities/Rate';
+import { User, UserModel } from '../entities/User';
 
 @Resolver(_of => Rate)
 export class RateResolver {
