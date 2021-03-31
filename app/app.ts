@@ -3,8 +3,6 @@ import express from 'express';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { connect } from 'mongoose';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 
 import { UserResolver } from './resolvers/User';
 import { ProductResolver } from './resolvers/Product';
@@ -18,21 +16,6 @@ import { User } from './entities/User';
 export interface Context {
   user: User;
 }
-const initializeSwagger = (app: express.Express) => {
-  const options = {
-    swaggerDefinition: {
-      info: {
-        title: 'REST API',
-        version: '1.0.0',
-        description: 'Example docs',
-      },
-    },
-    apis: ['swagger.yaml'],
-  };
-
-  const specs = swaggerJSDoc(options);
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-};
 
 export default async () => {
   const schema = await buildSchema({
@@ -42,7 +25,10 @@ export default async () => {
   });
 
   // create mongoose connection
-  const mongoose = await connect('mongodb://localhost:27017/test', { useNewUrlParser: true });
+  const mongoose = await connect('mongodb://localhost:27017/test', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   await mongoose.connection;
 
   const server = new ApolloServer({
@@ -63,7 +49,6 @@ export default async () => {
 
   const app = express();
 
-  initializeSwagger(app);
   server.applyMiddleware({ app });
   app.get('/', (_, res) => {
     res.send('Hello World!');

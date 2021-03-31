@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
-import { InputType, Field, Int } from 'type-graphql';
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class RateInput {
-  @Field()
+  @Field(() => ID)
   recipeId: ObjectId;
 
   @Field(_type => Int)

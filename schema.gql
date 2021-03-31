@@ -15,14 +15,14 @@ input CartInput {
 
 """The Category model"""
 type Category {
+  description: String!
   id: ID!
   name: String!
-  description: String!
 }
 
 input CategoryInput {
-  name: String!
   description: String!
+  name: String!
 }
 
 """
@@ -31,81 +31,112 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  createUser(data: UserInput!): User!
-  deleteUser(id: String!): Boolean!
-  deleteAllUsers: Boolean!
-  createProduct(data: ProductInput!): Product!
-  deleteProduct(id: String!): Boolean!
-  deleteAllProducts: Boolean!
-  createCategory(data: CategoryInput!): Category!
-  deleteCategory(id: String!): Boolean!
-  deleteAllCategories: Boolean!
+  addRecipe(recipe: RecipeInput!): Recipe!
   createCart(data: CartInput!): Cart!
-  deleteCart(id: String!): Boolean!
-  deleteAllCarts: Boolean!
+  createCategory(data: CategoryInput!): Category!
   createOrder(data: OrderInput!): Order!
-  deleteOrder(id: String!): Boolean!
+  createProduct(data: ProductInput!): Product!
+  createUser(data: UserInput!): User!
+  deleteAllCarts: Boolean!
+  deleteAllCategories: Boolean!
   deleteAllOrders: Boolean!
+  deleteAllProducts: Boolean!
+  deleteAllUsers: Boolean!
+  deleteCart(id: String!): Boolean!
+  deleteCategory(id: String!): Boolean!
+  deleteOrder(id: String!): Boolean!
+  deleteProduct(id: String!): Boolean!
+  deleteUser(id: String!): Boolean!
+  rate(rate: RateInput!): Recipe!
 }
+
+"""Mongo object id scalar type"""
+scalar ObjectId
 
 """The Order model"""
 type Order {
-  id: ID!
-  user: User!
-  payed: Boolean!
   date: DateTime!
+  id: ID!
+  payed: Boolean!
   product: Product!
+  user: User!
 }
 
 input OrderInput {
-  user: ID!
-  payed: Boolean!
   date: DateTime!
+  payed: Boolean!
   product: ID!
+  user: ID!
 }
 
 """The Product model"""
 type Product {
+  category: Category!
+  color: String!
+  description: String!
   id: ID!
   name: String!
-  description: String!
-  color: String!
-  stock: Int!
   price: Int!
-  category: Category!
+  stock: Int!
 }
 
 input ProductInput {
-  name: String!
-  description: String!
-  color: String!
-  stock: Float!
-  price: Float!
   category: ID!
+  color: String!
+  description: String!
+  name: String!
+  price: Float!
+  stock: Float!
 }
 
 type Query {
-  returnSingleUser(id: String!): User!
-  returnAllUsers: [User!]!
-  returnSingleProduct(id: String!): Order!
-  returnAllProducts: [Product!]!
-  returnSingleCategory(id: String!): Category!
-  returnAllCategories: [Category!]!
-  returnSingleCart(id: String!): Cart!
+  recipe(recipeId: ObjectId!): Recipe
+  recipes: [Recipe!]!
   returnAllCarts: [Cart!]!
+  returnAllCategories: [Category!]!
   returnAllOrders: [Order!]!
+  returnAllProducts: [Product!]!
+  returnAllUsers: [User!]!
+  returnSingleCart(id: String!): Cart!
+  returnSingleCategory(id: String!): Category!
+  returnSingleProduct(id: String!): Order!
+  returnSingleUser(id: String!): User!
+}
+
+type Rate {
+  date: DateTime!
+  user: User!
+  value: Int!
+}
+
+input RateInput {
+  recipeId: ID!
+  value: Int!
+}
+
+type Recipe {
+  author: User!
+  description: String
+  id: ID!
+  ratings: [Rate!]!
+  title: String!
+}
+
+input RecipeInput {
+  description: String
+  title: String!
 }
 
 """The User model"""
 type User {
+  cart: Cart!
+  email: String!
   id: ID!
   username: String!
-  email: String!
-  cart: Cart!
 }
 
 input UserInput {
-  username: String!
-  email: String!
   cart: ID!
+  email: String!
+  username: String!
 }
