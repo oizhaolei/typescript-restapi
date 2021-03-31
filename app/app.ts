@@ -65,6 +65,8 @@ export default async () => {
 
   initializeSwagger(app);
   server.applyMiddleware({ app });
-
+  app.get('/', (_, res) => {
+    res.send('Hello World!');
+  });
   return { app, server };
 };
