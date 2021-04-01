@@ -1,5 +1,5 @@
 import { prop as Property, getModelForClass } from '@typegoose/typegoose';
-import { Field, ObjectType, ID } from 'type-graphql';
+import { Field, ObjectType, Authorized, ID } from 'type-graphql';
 
 import { Rate } from './Rate';
 import { User } from './User';
@@ -18,6 +18,11 @@ export class Recipe {
   @Property()
   description?: string;
 
+  @Authorized() // restrict access to ingredients only for logged users (paid subscription?)
+  @Field(_type => [String])
+  ingredients: string[];
+
+  @Authorized('ADMIN') // restrict access to rates details for admin only
   @Field(_type => [Rate])
   @Property({ type: () => Rate, default: [] })
   ratings: Rate[];

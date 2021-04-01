@@ -1,0 +1,12 @@
+{
+    "watch": [
+        "app",
+        ".env"
+    ],
+    "ext": "js,ts,json",
+    "ignore": [
+        "app/**/*.spec.ts",
+        "app/**/*.test.ts"
+    ],
+    "exec": "ts-node  --transpile-only app/server.ts"
+}

@@ -1,12 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx } from 'type-graphql';
+import { Resolver, Query, FieldResolver, Authorized, Arg, Root, Mutation, Ctx } from 'type-graphql';
 
 import { Recipe, RecipeModel } from '../entities/Recipe';
 import { Rate } from '../entities/Rate';
 import { User, UserModel } from '../entities/User';
 import { RecipeInput } from './types/recipe-input';
 import { RateInput } from './types/rate-input';
-import { Context } from '../app';
+import { Context } from '../interfaces/context.interface';
 import { ObjectIdScalar } from '../object-id.scalar';
 
 @Resolver(_of => Recipe)
@@ -21,6 +21,7 @@ export class RecipeResolver {
     return await RecipeModel.find({});
   }
 
+  @Authorized() // only logged users can add new recipe
   @Mutation(_returns => Recipe)
   async addRecipe(@Arg('recipe') recipeInput: RecipeInput, @Ctx() { user }: Context): Promise<Recipe> {
     const recipe = new RecipeModel({
@@ -30,6 +31,13 @@ export class RecipeResolver {
 
     await recipe.save();
     return recipe;
+  }
+
+  @Authorized('ADMIN') // only admin can remove the published recipe
+  @Mutation()
+  async deleteRecipe(@Arg('recipeId', _type => ObjectIdScalar) id: ObjectId) {
+    await RecipeModel.deleteOne({ id });
+    return true;
   }
 
   @Mutation(_returns => Recipe)
