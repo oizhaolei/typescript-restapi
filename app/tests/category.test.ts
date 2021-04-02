@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import mongoose from 'mongoose';
 import supertest from 'supertest';
 import App from '../app';
 import { CategoryResolver } from '../resolvers/Category';
@@ -10,10 +11,16 @@ describe('Category', () => {
     // console.log("1 - beforeAll");
     app = await App([], [CategoryResolver]);
   });
+  afterAll(async () => {
+    // console.log("1 - afterAll");
+
+    mongoose.disconnect();
+  });
 
   test('crud', async () => {
     const request = supertest(app);
     // r
+    let originLength;
     {
       const query = `
       query returnAllCategories {
@@ -27,7 +34,8 @@ describe('Category', () => {
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBe(0);
+      expect(response.body.data.returnAllCategories.length).toBeGreaterThanOrEqual(0);
+      originLength = response.body.data.returnAllCategories.length;
     }
     // c
     let categoryId;
@@ -47,12 +55,13 @@ describe('Category', () => {
         query,
       });
       expect(response.status).toBe(200);
+      categoryId = response.body.data.createCategory.id;
       expect(response.body.data.createCategory.name).toBe('woman');
     }
     {
       const query = `
       query returnSingleCategory {
-        returnSingleCategory(id: ${categoryId}) {
+        returnSingleCategory(id: "${categoryId}") {
           id
           name
           description
@@ -62,7 +71,7 @@ describe('Category', () => {
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.createCategory.name).toBe('woman');
+      expect(response.body.data.returnSingleCategory.name).toBe('woman');
     }
     {
       const query = `
@@ -77,20 +86,48 @@ describe('Category', () => {
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBe(1);
+      expect(response.body.data.returnAllCategories.length).toBe(originLength + 1);
     }
     // u
     // d
     {
       const query = `
       mutation deleteCategory {
-        deleteCategory(id: ${categoryId})
+        deleteCategory(id: "${categoryId}")
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
       expect(response.body.data.deleteCategory).toBeTruthy();
+    }
+    // r
+    {
+      const query = `
+      query returnAllCategories {
+        returnAllCategories {
+          id
+          name
+          description
+        }
+      }`;
+      const response = await request.post('/graphql').send({
+        query,
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.data.returnAllCategories.length).toBe(originLength);
+    }
+    // da
+    {
+      const query = `
+      mutation deleteAllCategories {
+        deleteAllCategories
+      }`;
+      const response = await request.post('/graphql').send({
+        query,
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.data.deleteAllCategories).toBeTruthy();
     }
     // r
     {

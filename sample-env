@@ -1,2 +1,0 @@
-MONGODB_URI_LOCAL=mongodb://localhost:27017/test
-PORT=3333

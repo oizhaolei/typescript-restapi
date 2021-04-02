@@ -4,14 +4,15 @@ import { ProductInput } from './types/product-input';
 
 import { Category, CategoryModel } from '../entities/Category';
 
-@Resolver(_of => Product)
+@Resolver(() => Product)
 export class ProductResolver {
-  @Query(_returns => Product, { nullable: false })
-  async returnSingleProduct(@Arg('id') id: string) {
-    return await ProductModel.findById({ _id: id });
+  @Query(() => Product, { nullable: false })
+  async returnSingleProduct(@Arg('id') id: string): Promise<Category | null> {
+    return await ProductModel.findById(id);
   }
 
   @Query(() => [Product])
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async returnAllProducts() {
     return await ProductModel.find();
   }
@@ -31,20 +32,20 @@ export class ProductResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteProduct(@Arg('id') id: string) {
-    await ProductModel.deleteOne({ id });
+  async deleteProduct(@Arg('id') id: string): Promise<boolean> {
+    await ProductModel.deleteOne({ _id: id });
     return true;
   }
 
   @Mutation(() => Boolean)
-  async deleteAllProducts() {
+  async deleteAllProducts(): Promise<boolean> {
     await ProductModel.deleteMany({});
     return true;
   }
 
-  @FieldResolver(_type => Category)
+  @FieldResolver(() => Category)
   async category(@Root() product: Product): Promise<Category> {
     // console.log(product, "product!")
-    return (await CategoryModel.findById(product._doc.category))!;
+    return (await CategoryModel.findById(product.category))!;
   }
 }

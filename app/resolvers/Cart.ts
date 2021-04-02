@@ -4,14 +4,15 @@ import { CartInput } from './types/cart-input';
 
 import { Product, ProductModel } from '../entities/Product';
 
-@Resolver(_of => Cart)
+@Resolver(() => Cart)
 export class CartResolver {
-  @Query(_returns => Cart, { nullable: false })
-  async returnSingleCart(@Arg('id') id: string) {
-    return await CartModel.findById({ _id: id });
+  @Query(() => Cart, { nullable: false })
+  async returnSingleCart(@Arg('id') id: string): Promise<Cart | null> {
+    return await CartModel.findById(id);
   }
 
   @Query(() => [Cart])
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async returnAllCarts() {
     return await CartModel.find();
   }
@@ -26,20 +27,20 @@ export class CartResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteCart(@Arg('id') id: string) {
-    await CartModel.deleteOne({ id });
+  async deleteCart(@Arg('id') id: string): Promise<boolean> {
+    await CartModel.deleteOne({ _id: id });
     return true;
   }
 
   @Mutation(() => Boolean)
-  async deleteAllCarts() {
+  async deleteAllCarts(): Promise<boolean> {
     await CartModel.deleteMany({});
     return true;
   }
 
-  @FieldResolver(_type => Product)
-  async product(@Root() cart: Cart): Promise<Product> {
+  @FieldResolver(() => Product)
+  async product(@Root() cart: Cart): Promise<Product | null> {
     // console.log(cart, "cart!")
-    return (await ProductModel.findById(cart._doc.product))!;
+    return await ProductModel.findById(cart.product);
   }
 }

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import HttpException from '../HttpException';
 import { logger } from '../utils/logger';
 
-const errorMiddleware = (error: HttpException, _req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (error: HttpException, _req: Request, res: Response, next: NextFunction): void => {
   try {
     const status: number = error.status || 500;
     const message: string = error.message || 'Something went wrong';

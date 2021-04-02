@@ -1,12 +1,10 @@
 import { cleanEnv, port, str } from 'envalid';
 
-const validateEnv = () => {
+const validateEnv = (): void => {
   cleanEnv(process.env, {
     NODE_ENV: str(),
     PORT: port(),
-    MONGO_HOST: str(),
-    MONGO_PORT: str(),
-    MONGO_DATABASE: str(),
+    MONGODB_URI_LOCAL: str(),
     JWT_SECRET: str(),
   });
 };

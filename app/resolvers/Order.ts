@@ -5,16 +5,18 @@ import { OrderInput } from './types/order-input';
 
 import { User, UserModel } from '../entities/User';
 import { Product, ProductModel } from '../entities/Product';
+import { Context } from '../interfaces/context.interface';
 
-@Resolver(_of => Order)
+@Resolver(() => Order)
 export class OrderResolver {
-  @Query(_returns => Order, { nullable: false })
-  async returnSingleProduct(@Arg('id') id: string) {
-    return await OrderModel.findById({ _id: id });
+  @Query(() => Order, { nullable: false })
+  async returnSingleProduct(@Arg('id') id: string): Promise<Order | null> {
+    return await OrderModel.findById(id);
   }
 
   @Query(() => [Order])
-  async returnAllOrders(@Ctx() ctx: any) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  async returnAllOrders(@Ctx() ctx: Context) {
     console.log('ctx.user', ctx.user);
     return await OrderModel.find();
   }
@@ -32,26 +34,26 @@ export class OrderResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteOrder(@Arg('id') id: string) {
-    await OrderModel.deleteOne({ id });
+  async deleteOrder(@Arg('id') id: string): Promise<boolean> {
+    await OrderModel.deleteOne({ _id: id });
     return true;
   }
 
   @Mutation(() => Boolean)
-  async deleteAllOrders() {
+  async deleteAllOrders(): Promise<boolean> {
     await OrderModel.deleteMany({});
     return true;
   }
 
-  @FieldResolver(_type => User)
+  @FieldResolver(() => User)
   async user(@Root() order: Order): Promise<User> {
     // console.log(order, "order!")
-    return (await UserModel.findById(order._doc.user))!;
+    return (await UserModel.findById(order.user))!;
   }
 
-  @FieldResolver(_type => Product)
+  @FieldResolver(() => Product)
   async product(@Root() order: Order): Promise<Product> {
     // console.log(order, "order!")
-    return (await ProductModel.findById(order._doc.product))!;
+    return (await ProductModel.findById(order.product))!;
   }
 }

@@ -3,7 +3,7 @@ import winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 
 // logs dir
-const logDir = __dirname + '/../logs';
+const logDir = 'logs';
 
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
@@ -27,6 +27,16 @@ const logger = winston.createLogger({
     logFormat,
   ),
   transports: [
+    // debug log setting
+    new winstonDaily({
+      level: 'debug',
+      datePattern: 'YYYY-MM-DD',
+      dirname: logDir + '/debug', // log file /logs/info/*.log in save
+      filename: `%DATE%.log`,
+      maxFiles: 30, // 30 Days saved
+      json: false,
+      zippedArchive: true,
+    }),
     // info log setting
     new winstonDaily({
       level: 'info',
@@ -58,7 +68,7 @@ logger.add(
 );
 
 const stream = {
-  write: (message: string) => {
+  write: (message: string): void => {
     logger.info(message.substring(0, message.lastIndexOf('\n')));
   },
 };

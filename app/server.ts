@@ -7,13 +7,11 @@ import { ProductResolver } from './resolvers/Product';
 import { CategoryResolver } from './resolvers/Category';
 import { CartResolver } from './resolvers/Cart';
 import { OrderResolver } from './resolvers/Order';
-import { RecipeResolver } from './resolvers/Recipe';
-import { RateResolver } from './resolvers/Rate';
 import validateEnv from './utils/validateEnv';
 
 validateEnv();
 const routes = [new IndexRoute()];
-const resolvers = [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver, RecipeResolver, RateResolver];
+const resolvers = [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver];
 
 const main = async () => {
   const app = await App(routes, resolvers);

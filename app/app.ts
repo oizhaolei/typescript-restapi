@@ -8,14 +8,14 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
-import { connect } from 'mongoose';
+import mongoose from 'mongoose';
 
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
 import Routes from './interfaces/routes.interface';
 
 import { Context } from './interfaces/context.interface';
-import { authChecker } from './auth-checker';
+import { verifyToken, authChecker } from './utils/auth-checker';
 
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
@@ -40,19 +40,18 @@ const initializeRoutes = (app: express.Express, routes: Routes[]) => {
   routes.forEach(route => {
     app.use('/', route.router);
   });
-  app.get('/', (_, res) => {
-    res.send('Hello World!');
-  });
 };
 
 // create mongoose connection
 const initializeMongoose = async () => {
   const { MONGODB_URI_LOCAL } = process.env;
-  const mongoose = await connect(`${MONGODB_URI_LOCAL}`, {
+  await mongoose.connect(`${MONGODB_URI_LOCAL}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  await mongoose.connection;
+  mongoose.set('debug', (coll: string, method: string, query: any, doc: any, options: any) => {
+    logger.debug(`${coll}.${method}.(${JSON.stringify(query)})`, JSON.stringify(doc), options || '');
+  });
   logger.info('🟢 The database is connected.');
 };
 
@@ -70,21 +69,11 @@ const initializeApollo = async (app: express.Express, resolvers: any) => {
 
   const server = new ApolloServer({
     schema,
-    context: ({ req }) => {
-      // Get the user token from the headers.
-      const token = req.headers.authorization || '';
-      console.log('token', token);
-
+    context: async ({ req }) => {
       // add the user to the context
+      const user = await verifyToken(req);
       const ctx: Context = {
-        user: {
-          id: '1',
-          username: 'fake user',
-          password: 'fake pass',
-          email: 'fake email',
-          roles: ['REGULAR'],
-          _doc: undefined,
-        },
+        user,
       };
       return ctx;
     },
@@ -114,8 +103,8 @@ export default async (routes: Routes[], resolvers: any): Promise<express.Express
   initializeMiddlewares(app);
   await initializeMongoose();
   await initializeApollo(app, resolvers);
-  initializeSwagger(app);
   initializeRoutes(app, routes);
+  initializeSwagger(app);
   initializeErrorHandling(app);
 
   return app;

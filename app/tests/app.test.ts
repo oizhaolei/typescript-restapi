@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import mongoose from 'mongoose';
 import supertest from 'supertest';
 import App from '../app';
 import IndexRoute from '../routes/index.route';
@@ -11,6 +12,10 @@ describe('normal', () => {
     // console.log("1 - beforeAll");
     app = await App([new IndexRoute()], [CategoryResolver]);
   });
+  afterAll(async () => {
+    // console.log("1 - afterAll");
+    mongoose.disconnect();
+  });
 
   test('GET: /', async () => {
     const request = supertest(app);
@@ -19,11 +24,11 @@ describe('normal', () => {
     expect(response.body.msg).toEqual('Hello World!');
   });
 
-  test('GET: /api-docs', async () => {
-    const request = supertest(app);
-    const response = await request.get('/api-docs');
-    expect(response.status).toBe(200);
-  });
+  // test('GET: /api-docs', async () => {
+  //   const request = supertest(app);
+  //   const response = await request.get('/api-docs');
+  //   expect(response.status).toBe(200);
+  // });
 
   test('GET: /graphql', async () => {
     const request = supertest(app);
