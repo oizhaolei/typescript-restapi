@@ -26,6 +26,7 @@ export class Order {
   @Field(() => Product)
   @Property({ ref: Product, required: true })
   product: Ref<Product>;
+  _doc: any;
 }
 
 export const OrderModel = getModelForClass(Order);

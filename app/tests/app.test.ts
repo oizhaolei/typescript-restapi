@@ -30,7 +30,7 @@ describe('normal', () => {
   //   expect(response.status).toBe(200);
   // });
 
-  test('GET: /graphql', async () => {
+  test('GET: /graphql', async done => {
     const request = supertest(app);
     const query = `
     query returnAllCategories {
@@ -45,5 +45,6 @@ describe('normal', () => {
     });
     expect(response.status).toBe(200);
     expect(response.body.data.returnAllCategories.length).toBeGreaterThanOrEqual(0);
+    done();
   });
 });

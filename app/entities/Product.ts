@@ -31,6 +31,7 @@ export class Product {
   @Field(() => Category)
   @Property({ ref: Category })
   category: Ref<Category>;
+  _doc: any;
 }
 
 export const ProductModel = getModelForClass(Product);

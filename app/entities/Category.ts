@@ -13,6 +13,7 @@ export class Category {
   @Field()
   @Property()
   description: string;
+  _doc: any;
 }
 
 export const CategoryModel = getModelForClass(Category);

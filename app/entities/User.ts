@@ -31,6 +31,7 @@ export class User {
   @Field(() => Cart)
   @Property({ ref: Cart, required: true })
   cart: Ref<Cart>;
+  _doc: any;
 }
 
 export const UserModel = getModelForClass(User);

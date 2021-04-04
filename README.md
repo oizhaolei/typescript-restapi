@@ -198,3 +198,11 @@ query returnAllOrders {
   }
 }
 ```
+
+
+## TODO
+- more tests...
+- swagger api
+- coverage         -- OK
+- passport
+- react client

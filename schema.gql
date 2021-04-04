@@ -17,11 +17,36 @@ input CategoryInput {
 
 type Mutation {
   createCategory(data: CategoryInput!): Category!
+  createProduct(data: ProductInput!): Product!
   deleteAllCategories: Boolean!
+  deleteAllProducts: Boolean!
   deleteCategory(id: String!): Boolean!
+  deleteProduct(id: String!): Boolean!
+}
+
+"""The Product model"""
+type Product {
+  category: Category!
+  color: String!
+  description: String!
+  id: ID!
+  name: String!
+  price: Int!
+  stock: Int!
+}
+
+input ProductInput {
+  category: ID!
+  color: String!
+  description: String!
+  name: String!
+  price: Float!
+  stock: Float!
 }
 
 type Query {
   returnAllCategories: [Category!]!
+  returnAllProducts: [Product!]!
   returnSingleCategory(id: String!): Category!
+  returnSingleProduct(id: String!): Product!
 }

@@ -1,8 +1,10 @@
 import { Resolver, Mutation, Arg, Query, FieldResolver, Root } from 'type-graphql';
 import { Product, ProductModel } from '../entities/Product';
 import { ProductInput } from './types/product-input';
+import HttpException from '../HttpException';
 
 import { Category, CategoryModel } from '../entities/Category';
+import { logger } from '../utils/logger';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -28,12 +30,14 @@ export class ProductResolver {
       category,
     });
     await product.save();
+    logger.info('product:', product.toObject());
     return product;
   }
 
   @Mutation(() => Boolean)
   async deleteProduct(@Arg('id') id: string): Promise<boolean> {
-    await ProductModel.deleteOne({ _id: id });
+    const res = await ProductModel.deleteOne({ _id: id });
+    if (res.deletedCount !== 1) throw new HttpException(400, `category  ${id} is not exist.`);
     return true;
   }
 
@@ -45,7 +49,6 @@ export class ProductResolver {
 
   @FieldResolver(() => Category)
   async category(@Root() product: Product): Promise<Category> {
-    // console.log(product, "product!")
-    return (await CategoryModel.findById(product.category))!;
+    return (await CategoryModel.findById(product._doc.category))!;
   }
 }

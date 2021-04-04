@@ -4,12 +4,13 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import App from '../app';
 import { CategoryResolver } from '../resolvers/Category';
+import { ProductResolver } from '../resolvers/Product';
 
-describe('Category', () => {
+describe('Product', () => {
   let app: express.Express;
   beforeAll(async () => {
     // console.log("1 - beforeAll");
-    app = await App([], [CategoryResolver]);
+    app = await App([], [CategoryResolver, ProductResolver]);
   });
   afterAll(async () => {
     // console.log("1 - afterAll");
@@ -23,21 +24,23 @@ describe('Category', () => {
     let originLength;
     {
       const query = `
-      query returnAllCategories {
-        returnAllCategories {
+      query returnAllProducts {
+        returnAllProducts {
           id
           name
           description
+          color
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBeGreaterThanOrEqual(0);
-      originLength = response.body.data.returnAllCategories.length;
+      expect(response.body.data.returnAllProducts.length).toBeGreaterThanOrEqual(0);
+      originLength = response.body.data.returnAllProducts.length;
     }
     // c
+    let productId;
     let categoryId;
     {
       const query = `
@@ -54,58 +57,96 @@ describe('Category', () => {
       const response = await request.post('/graphql').send({
         query,
       });
-      expect(response.status).toBe(200);
       categoryId = response.body.data.createCategory.id;
-      expect(response.body.data.createCategory.name).toBe('woman');
     }
     {
       const query = `
-      query returnSingleCategory {
-        returnSingleCategory(id: "${categoryId}") {
+      mutation createProduct {
+        createProduct(data: {
+          name: "woman",
+          description: "for woman"
+          color: "red"
+          stock: 11
+          price: 12
+          category: "${categoryId}"
+        }) {
           id
           name
           description
+          color
+          stock
+          price
+          category {
+            id
+            name
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnSingleCategory.name).toBe('woman');
+      productId = response.body.data.createProduct.id;
+      expect(response.body.data.createProduct.name).toBe('woman');
     }
     {
       const query = `
-      query returnAllCategories {
-        returnAllCategories {
+      query returnSingleProduct {
+        returnSingleProduct(id: "${productId}") {
           id
           name
           description
+          color
+          stock
+          price
+          category {
+            id
+            name
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBe(originLength + 1);
+      expect(response.body.data.returnSingleProduct.name).toBe('woman');
+    }
+    {
+      const query = `
+      query returnAllProducts {
+        returnAllProducts {
+          id
+          name
+          description
+          color
+          stock
+          price
+       }
+      }`;
+      const response = await request.post('/graphql').send({
+        query,
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.data.returnAllProducts.length).toBe(originLength + 1);
     }
     // u
     // d
     {
       const query = `
-      mutation deleteCategory {
-        deleteCategory(id: "${categoryId}")
+      mutation deleteProduct {
+        deleteProduct(id: "${productId}")
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.deleteCategory).toBeTruthy();
+      expect(response.body.data.deleteProduct).toBeTruthy();
     }
     // d
     {
       const query = `
-      mutation deleteCategory {
-        deleteCategory(id: "${categoryId}")
+      mutation deleteProduct {
+        deleteProduct(id: "${productId}")
       }`;
       const response = await request.post('/graphql').send({
         query,
@@ -115,46 +156,56 @@ describe('Category', () => {
     // r
     {
       const query = `
-      query returnAllCategories {
-        returnAllCategories {
+      query returnAllProducts {
+        returnAllProducts {
           id
           name
           description
+          color
+          stock
+          price
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBe(originLength);
+      expect(response.body.data.returnAllProducts.length).toBe(originLength);
     }
     // da
     {
       const query = `
-      mutation deleteAllCategories {
-        deleteAllCategories
+      mutation deleteAllProducts {
+        deleteAllProducts
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.deleteAllCategories).toBeTruthy();
+      expect(response.body.data.deleteAllProducts).toBeTruthy();
     }
     // r
     {
       const query = `
-      query returnAllCategories {
-        returnAllCategories {
+      query returnAllProducts {
+        returnAllProducts {
           id
           name
           description
+          color
+          stock
+          price
+          category {
+            id
+            name
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllCategories.length).toBe(0);
+      expect(response.body.data.returnAllProducts.length).toBe(0);
     }
   });
 });
