@@ -31,6 +31,7 @@ export class User {
   @Field(() => Cart)
   @Property({ ref: Cart, required: true })
   cart: Ref<Cart>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _doc: any;
 }
 

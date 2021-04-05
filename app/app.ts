@@ -70,8 +70,9 @@ const initializeApollo = async (app: express.Express, resolvers: any) => {
   const server = new ApolloServer({
     schema,
     context: async ({ req }) => {
+      // Get the user token from the headers.
+      const user = await verifyToken(req.headers.authorization || '');
       // add the user to the context
-      const user = await verifyToken(req);
       const ctx: Context = {
         user,
       };

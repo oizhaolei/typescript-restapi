@@ -26,6 +26,7 @@ export class Order {
   @Field(() => Product)
   @Property({ ref: Product, required: true })
   product: Ref<Product>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _doc: any;
 }
 

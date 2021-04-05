@@ -10,6 +10,10 @@ export class UserInput implements Partial<User> {
   username: string;
 
   @Field()
+  @Length(10, 50)
+  password: string;
+
+  @Field()
   @IsEmail()
   email: string;
 

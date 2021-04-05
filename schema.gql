@@ -3,6 +3,17 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""The Cart model"""
+type Cart {
+  id: ID!
+  product: Product!
+  products: [Product!]!
+}
+
+input CartInput {
+  products: ID!
+}
+
 """The Category model"""
 type Category {
   description: String!
@@ -15,13 +26,44 @@ input CategoryInput {
   name: String!
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 type Mutation {
+  createCart(data: CartInput!): Cart!
   createCategory(data: CategoryInput!): Category!
+  createOrder(data: OrderInput!): Order!
   createProduct(data: ProductInput!): Product!
+  createUser(data: UserInput!): User!
+  deleteAllCarts: Boolean!
   deleteAllCategories: Boolean!
+  deleteAllOrders: Boolean!
   deleteAllProducts: Boolean!
+  deleteAllUsers: Boolean!
+  deleteCart(id: String!): Boolean!
   deleteCategory(id: String!): Boolean!
+  deleteOrder(id: String!): Boolean!
   deleteProduct(id: String!): Boolean!
+  deleteUser(id: String!): Boolean!
+  updateCategory(data: CategoryInput!, id: String!): Category!
+}
+
+"""The Order model"""
+type Order {
+  date: DateTime!
+  id: ID!
+  payed: Boolean!
+  product: Product!
+  user: User!
+}
+
+input OrderInput {
+  date: DateTime!
+  payed: Boolean!
+  product: ID!
+  user: ID!
 }
 
 """The Product model"""
@@ -45,8 +87,34 @@ input ProductInput {
 }
 
 type Query {
+  returnAllCarts: [Cart!]!
   returnAllCategories: [Category!]!
+  returnAllOrders: [Order!]!
   returnAllProducts: [Product!]!
+  returnAllUsers: [User!]!
+  returnSingleCart(id: String!): Cart!
   returnSingleCategory(id: String!): Category!
-  returnSingleProduct(id: String!): Product!
+  returnSingleProduct(id: String!): Order!
+  returnSingleUser(id: String!): User!
+}
+
+type Role {
+  title: String!
+  value: String!
+}
+
+"""The User model"""
+type User {
+  cart: Cart!
+  email: String!
+  id: ID!
+  roles: [Role!]!
+  username: String!
+}
+
+input UserInput {
+  cart: ID!
+  email: String!
+  password: String!
+  username: String!
 }

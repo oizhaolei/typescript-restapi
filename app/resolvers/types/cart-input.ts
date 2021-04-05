@@ -6,5 +6,5 @@ import { ObjectId } from 'mongodb';
 @InputType()
 export class CartInput implements Partial<Cart> {
   @Field(() => ID)
-  product: ObjectId;
+  products: ObjectId[];
 }

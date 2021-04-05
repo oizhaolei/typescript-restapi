@@ -1,24 +1,38 @@
-import { Request } from 'express';
 import { AuthChecker } from 'type-graphql';
 import jwt from 'jsonwebtoken';
 
+import { jwtOptions } from '../utils/jwt';
 import { Context } from '../interfaces/context.interface';
 import { User } from '../entities/User';
 
-export const sign = (payload: User): string => {
-  const { AUTH_SECRET } = process.env;
-  return jwt.sign(payload, `${AUTH_SECRET}`);
+export const sign = (payload: Record<string, unknown>, opts?: Partial<jwt.SignOptions>): string => {
+  const defaultSignOptions: Partial<jwt.SignOptions> = {
+    algorithm: 'RS512',
+    issuer: jwtOptions.issuer,
+    audience: jwtOptions.audience,
+    expiresIn: jwtOptions.expiresIn,
+  };
+
+  return jwt.sign(payload, jwtOptions.privateKey, {
+    ...defaultSignOptions,
+    ...opts,
+  });
 };
 
-export const verifyToken = async (req: Request): Promise<User> => {
-  // Get the user token from the headers.
-  const authorization = req.headers.authorization || '';
-
+export const verifyToken = async (authorization: string, opts?: Partial<jwt.VerifyOptions>): Promise<User> => {
   if (authorization) {
     const token = authorization.replace('Bearer ', '');
-    const { AUTH_SECRET } = process.env;
     try {
-      const user = await jwt.verify(token, `${AUTH_SECRET}`);
+      const defaultVerifyOptions: Partial<jwt.VerifyOptions> = {
+        algorithms: ['RS512'],
+        issuer: jwtOptions.issuer,
+        audience: jwtOptions.audience,
+      };
+
+      const user = await jwt.verify(token, jwtOptions.publicKey, {
+        ...defaultVerifyOptions,
+        ...opts,
+      });
       return Object.assign(new User(), user);
     } catch (e) {
       return User.anonymous;

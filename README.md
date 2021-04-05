@@ -1,4 +1,4 @@
-# Integrating Typscript with Graphql using Type-Graphl, a modern framework for building Graphql Node JS APIs
+# Integrating Typescript with Graphql using Type-Graphql, a modern framework for building Graphql Node JS APIs
 
 ### To compile the application, run `npm run build-ts`
 
@@ -6,12 +6,12 @@
 
 ## Dependencies
 
- - Typgoose, `@typegoose/typegoose`  A library for defining Mongoose models using TypeScript classes.
- - Type-Graphl, A library for creating GraphQL schema and resolvers with TypeScript, using `classes` and `decorators magic` :)!
+ - Typegoose, `@typegoose/typegoose`  A library for defining Mongoose models using TypeScript classes.
+ - Type-Graphql, A library for creating GraphQL schema and resolvers with TypeScript, using `classes` and `decorators magic` :)!
  - Apollo-server-express, `apollo-server-express`, A library for quickly bootstrapping graphql servers with Apollo and Express
-  
 
-  ### For a note on other dependencies, please have a look at the `package.json` file. 
+
+  ### For a note on other dependencies, please have a look at the `package.json` file.
 
 
   Note: Run `npm install` to install all the projects dependencies...
@@ -202,7 +202,7 @@ query returnAllOrders {
 
 ## TODO
 - more tests...
-- swagger api
+- swagger api      -- OK
 - coverage         -- OK
 - passport
 - react client

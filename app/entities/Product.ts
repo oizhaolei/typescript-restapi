@@ -31,6 +31,7 @@ export class Product {
   @Field(() => Category)
   @Property({ ref: Category })
   category: Ref<Category>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _doc: any;
 }
 

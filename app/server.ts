@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import App from './app';
 import IndexRoute from './routes/index.route';
+import UsersRoute from './routes/users.route';
 
 import { UserResolver } from './resolvers/User';
 import { ProductResolver } from './resolvers/Product';
@@ -10,7 +11,7 @@ import { OrderResolver } from './resolvers/Order';
 import validateEnv from './utils/validateEnv';
 
 validateEnv();
-const routes = [new IndexRoute()];
+const routes = [new IndexRoute(), new UsersRoute()];
 const resolvers = [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver];
 
 const main = async () => {

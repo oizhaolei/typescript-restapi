@@ -89,6 +89,27 @@ describe('Category', () => {
       expect(response.body.data.returnAllCategories.length).toBe(originLength + 1);
     }
     // u
+    {
+      const query = `
+      mutation updateCategory {
+        updateCategory(
+          id: "${categoryId}",
+          data: {
+            name: "girl",
+            description: "for girl"
+          }
+        ) {
+          id
+          name
+          description
+        }
+      }`;
+      const response = await request.post('/graphql').send({
+        query,
+      });
+      expect(response.status).toBe(200);
+      expect(response.body.data.updateCategory.name).toBe('girl');
+    }
     // d
     {
       const query = `

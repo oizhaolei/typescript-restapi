@@ -18,9 +18,9 @@ export class CartResolver {
   }
 
   @Mutation(() => Cart)
-  async createCart(@Arg('data') { product }: CartInput): Promise<Cart> {
+  async createCart(@Arg('data') { products }: CartInput): Promise<Cart> {
     const cart = new CartModel({
-      product,
+      products,
     });
     await cart.save();
     return cart;
@@ -41,6 +41,6 @@ export class CartResolver {
   @FieldResolver(() => Product)
   async product(@Root() cart: Cart): Promise<Product | null> {
     // console.log(cart, "cart!")
-    return await ProductModel.findById(cart.product);
+    return await ProductModel.findById(cart.products);
   }
 }

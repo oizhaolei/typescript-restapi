@@ -28,6 +28,22 @@ export class CategoryResolver {
     return category;
   }
 
+  @Mutation(() => Category)
+  async updateCategory(@Arg('id') id: string, @Arg('data') { name, description }: CategoryInput): Promise<Category | null> {
+    return await CategoryModel.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        name,
+        description,
+      },
+      {
+        new: true,
+      },
+    );
+  }
+
   @Mutation(() => Boolean)
   async deleteCategory(@Arg('id') id: string): Promise<boolean> {
     const res = await CategoryModel.deleteOne({ _id: id });
