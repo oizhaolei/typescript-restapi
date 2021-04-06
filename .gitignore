@@ -4,6 +4,7 @@ node_modules
 
 # API keys and secrets
 .env
+schema.gql
 
 # build sources
 build
