@@ -25,7 +25,46 @@ describe('Testing Users', () => {
 
   it('response All Users', async () => {
     const request = supertest(app);
-    const response = await request.get(`${usersRoute.path}`);
-    expect(response.status).toBe(200);
+    {
+      const response = await request.get(`${usersRoute.path}`);
+      expect(response.status).toBe(200);
+    }
+    let userId;
+    {
+      const response = await request
+        .post(`${usersRoute.path}`)
+        .send({
+          username: 'john2',
+          password: 'john2',
+          email: 'johnx@gmail.com',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+      expect(response.status).toBe(201);
+      console.log('create user:', response.body.data);
+      userId = response.body.data._id;
+    }
+    {
+      const response = await request.delete(`${usersRoute.path}/${userId}`).set('Accept', 'application/json').expect('Content-Type', /json/);
+      expect(response.status).toBe(200);
+      console.log('delete user:', response.body.data);
+      userId = response.body.data._id;
+    }
+  });
+
+  it('mock', () => {
+    const usersRoute = new UsersRoute();
+    usersRoute.usersController.userService.userModel.find = jest.fn().mockReturnValue(
+      Promise.resolve([
+        {
+          email: 'example@gmail.com',
+          password: 'q1w2e3r4!',
+        },
+      ]),
+    );
+
+    mongoose.connect = jest.fn();
+    const request = supertest(app);
+    return request.get(`${usersRoute.path}`).expect(200);
   });
 });

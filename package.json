@@ -9,7 +9,7 @@
     "watch-node": "cross-env NODE_ENV=development nodemon dist/server.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "test": "jest --forceExit --runInBand --coverage --verbose app/",
+    "test": "jest --forceExit --detectOpenHandles --runInBand --coverage --verbose app/",
     "lint": "eslint --ignore-path .gitignore --ext .ts app/",
     "lint:fix": "npm run lint -- --fix"
   },

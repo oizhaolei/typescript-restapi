@@ -29,7 +29,7 @@ export class User {
   roles: Role[];
 
   @Field(() => Cart)
-  @Property({ ref: Cart, required: true })
+  @Property({ ref: Cart })
   cart: Ref<Cart>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _doc: any;
