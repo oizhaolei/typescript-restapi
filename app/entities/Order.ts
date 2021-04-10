@@ -23,9 +23,9 @@ export class Order {
   @Property({ default: new Date(), required: true, nullable: true })
   date: Date;
 
-  @Field(() => Product)
-  @Property({ ref: Product, required: true })
-  product: Ref<Product>;
+  @Field(() => [Product])
+  @Property({ ref: () => Product })
+  products: Ref<Product>[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _doc: any;
 }

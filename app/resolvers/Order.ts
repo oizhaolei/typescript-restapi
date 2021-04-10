@@ -22,12 +22,12 @@ export class OrderResolver {
   }
 
   @Mutation(() => Order)
-  async createOrder(@Arg('data') { user, date, payed, product }: OrderInput): Promise<Order> {
+  async createOrder(@Arg('data') { user, date, payed, products }: OrderInput): Promise<Order> {
     const order = new OrderModel({
       user,
       date,
       payed,
-      product,
+      products,
     });
     await order.save();
     return order;
@@ -51,9 +51,13 @@ export class OrderResolver {
     return (await UserModel.findById(order.user))!;
   }
 
-  @FieldResolver(() => Product)
-  async product(@Root() order: Order): Promise<Product> {
+  @FieldResolver(() => [Product])
+  async products(@Root() order: Order): Promise<Product[]> {
     // console.log(order, "order!")
-    return (await ProductModel.findById(order.product))!;
+    return (await ProductModel.find({
+      _id: {
+        $in: order.products,
+      },
+    }))!;
   }
 }

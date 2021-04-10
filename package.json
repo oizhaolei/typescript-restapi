@@ -1,5 +1,5 @@
 {
-  "name": "typescript-graphql-logrocket-tutorial",
+  "name": "typescript-graphql",
   "version": "1.0.0",
   "description": "A typescript and graphql Tutorial",
   "main": "server.js",
@@ -32,6 +32,7 @@
     "@types/mongoose": "^5.10.3",
     "@types/morgan": "^1.9.2",
     "@types/node": "^13.9.0",
+    "@types/passport-jwt": "^3.0.5",
     "@types/supertest": "^2.0.11",
     "@types/swagger-jsdoc": "^6.0.0",
     "@types/swagger-ui-express": "^4.1.2",
@@ -64,6 +65,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "5.10.18",
     "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",

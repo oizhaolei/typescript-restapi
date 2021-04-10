@@ -27,7 +27,11 @@ const initializeMiddlewares = (app: express.Express) => {
   }
 
   app.use(hpp());
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
+    }),
+  );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 };

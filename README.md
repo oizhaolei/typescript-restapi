@@ -89,9 +89,9 @@ query  returnAllProducts {
 
 ```
 mutation createCart {
-  createCart(data: { product: "5fe4cfff3b148950401b4ba9" }) {
+  createCart(data: { products: ["5fe4cfff3b148950401b4ba9"] }) {
     id
-    product {
+    products {
       id
       name
       description
@@ -105,7 +105,7 @@ mutation createCart {
 query returnAllCarts {
   returnAllCarts {
     id
-    product {
+    products {
       id
       name
       description
@@ -169,7 +169,7 @@ mutation createOrder {
     }
     date
     payed
-    product {
+    products {
       id
       name
     }
@@ -191,7 +191,7 @@ query returnAllOrders {
     user
     payed
     date
-    product {
+    products {
       id
       name
     }
@@ -204,5 +204,17 @@ query returnAllOrders {
 - more tests...
 - swagger api      -- OK
 - coverage         -- OK
+- pagination
 - passport
 - react client
+
+
+```
+mutation createCart {
+   createCart(data: {
+     products: ["6071b98e323e35676c65638e"]
+   }) {
+     id
+   }
+ }
+```

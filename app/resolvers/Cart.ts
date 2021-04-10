@@ -38,9 +38,12 @@ export class CartResolver {
     return true;
   }
 
-  @FieldResolver(() => Product)
-  async product(@Root() cart: Cart): Promise<Product | null> {
-    // console.log(cart, "cart!")
-    return await ProductModel.findById(cart.products);
+  @FieldResolver(() => [Product])
+  async products(@Root() cart: Cart): Promise<Product[] | null> {
+    return await ProductModel.find({
+      _id: {
+        $in: cart._doc.products,
+      },
+    });
   }
 }

@@ -14,5 +14,5 @@ export class OrderInput implements Partial<Order> {
   date: Date;
 
   @Field(() => ID)
-  product: ObjectId;
+  products: ObjectId[];
 }
