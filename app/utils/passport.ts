@@ -16,23 +16,13 @@ passport.use(
         // TODO: remove it
         if (Date.now() > jwtPayload.expires) return done('Token expired');
 
-        const user = await UserModel.findOne({
-          username: jwtPayload.username,
-        }).exec();
-        return done(null, user);
+        const user = await UserModel.findById(jwtPayload._id).exec();
+        return done(null, user, jwtPayload);
       } catch (error) {
         return done(error);
       }
     },
   ),
 );
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
 
 export default passport;

@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import passport from 'passport';
+
 import UsersController from '../controllers/users.controller';
 import Route from '../interfaces/routes.interface';
 
@@ -17,6 +19,13 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}`, this.usersController.createUser);
     this.router.put(`${this.path}/:id`, this.usersController.updateUser);
     this.router.delete(`${this.path}/:id`, this.usersController.deleteUser);
+    this.router.get(
+      `${this.path}/profile`,
+      passport.authenticate('jwt', {
+        session: false,
+      }),
+      this.usersController.getProfile,
+    );
   }
 }
 

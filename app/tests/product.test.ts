@@ -40,8 +40,7 @@ describe('Product', () => {
       originLength = response.body.data.returnAllProducts.length;
     }
     // c
-    let productId;
-    let categoryId;
+    let categoryId: string;
     {
       const query = `
       mutation createCategory {
@@ -59,12 +58,12 @@ describe('Product', () => {
       });
       categoryId = response.body.data.createCategory.id;
     }
-    {
+    const productIds = await Array.from(Array(10).keys()).map(async i => {
       const query = `
       mutation createProduct {
         createProduct(data: {
           name: "woman",
-          description: "for woman"
+          description: "for woman - ${i}"
           color: "red"
           stock: 11
           price: 12
@@ -86,13 +85,15 @@ describe('Product', () => {
         query,
       });
       expect(response.status).toBe(200);
-      productId = response.body.data.createProduct.id;
+      const productId = response.body.data.createProduct.id;
       expect(response.body.data.createProduct.name).toBe('woman');
-    }
+      return productId;
+    });
+
     {
       const query = `
       query returnSingleProduct {
-        returnSingleProduct(id: "${productId}") {
+        returnSingleProduct(id: "${productIds[0]}") {
           id
           name
           description
@@ -127,32 +128,21 @@ describe('Product', () => {
         query,
       });
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllProducts.length).toBe(originLength + 1);
+      expect(response.body.data.returnAllProducts.length).toBe(originLength + 10);
     }
     // u
     // d
-    {
+    await Array.from(Array(10).keys()).map(async i => {
       const query = `
       mutation deleteProduct {
-        deleteProduct(id: "${productId}")
+        deleteProduct(id: "${productIds[i]}")
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
       expect(response.status).toBe(200);
       expect(response.body.data.deleteProduct).toBeTruthy();
-    }
-    // d
-    {
-      const query = `
-      mutation deleteProduct {
-        deleteProduct(id: "${productId}")
-      }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
-      expect(response.status).toBe(200);
-    }
+    });
     // r
     {
       const query = `

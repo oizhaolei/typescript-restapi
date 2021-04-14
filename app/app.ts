@@ -10,6 +10,7 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import mongoose from 'mongoose';
 
+import passport from './utils/passport';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
 import Routes from './interfaces/routes.interface';
@@ -25,6 +26,9 @@ const initializeMiddlewares = (app: express.Express) => {
     app.use(morgan('dev', { stream }));
     app.use(cors({ origin: true, credentials: true }));
   }
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.use(hpp());
   app.use(
