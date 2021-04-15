@@ -12,8 +12,7 @@ export class CartResolver {
   }
 
   @Query(() => [Cart])
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async returnAllCarts() {
+  async returnAllCarts(): Promise<Cart[]> {
     return await CartModel.find();
   }
 

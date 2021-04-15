@@ -58,8 +58,9 @@ describe('Product', () => {
       });
       categoryId = response.body.data.createCategory.id;
     }
-    const productIds = await Array.from(Array(10).keys()).map(async i => {
-      const query = `
+    const productIds = await Promise.all(
+      Array.from(Array(10).keys()).map(async i => {
+        const query = `
       mutation createProduct {
         createProduct(data: {
           name: "woman",
@@ -81,14 +82,15 @@ describe('Product', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
-      expect(response.status).toBe(200);
-      const productId = response.body.data.createProduct.id;
-      expect(response.body.data.createProduct.name).toBe('woman');
-      return productId;
-    });
+        const response = await request.post('/graphql').send({
+          query,
+        });
+        expect(response.status).toBe(200);
+        const productId = response.body.data.createProduct.id;
+        expect(response.body.data.createProduct.name).toBe('woman');
+        return productId;
+      }),
+    );
 
     {
       const query = `

@@ -1,4 +1,6 @@
 import { Resolver, Mutation, Arg, Query, FieldResolver, Root } from 'type-graphql';
+import bcrypt from 'bcrypt';
+
 import { User, UserModel } from '../entities/User';
 import { UserInput } from './types/user-input';
 
@@ -12,16 +14,17 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async returnAllUsers() {
+  async returnAllUsers(): Promise<User[]> {
     return await UserModel.find();
   }
 
   @Mutation(() => User)
-  async createUser(@Arg('data') { username, email, cart }: UserInput): Promise<User> {
+  async createUser(@Arg('data') { username, email, password, cart }: UserInput): Promise<User> {
+    const hash = bcrypt.hashSync(password, 10);
     const user = new UserModel({
       username,
       email,
+      password: hash,
       cart,
     });
     await user.save();

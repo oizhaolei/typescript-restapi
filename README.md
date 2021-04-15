@@ -201,20 +201,9 @@ query returnAllOrders {
 
 
 ## TODO
-- more tests...
 - swagger api      -- OK
 - coverage         -- OK
+- more tests...
 - pagination
 - passport
 - react client
-
-
-```
-mutation createCart {
-   createCart(data: {
-     products: ["6071b98e323e35676c65638e"]
-   }) {
-     id
-   }
- }
-```

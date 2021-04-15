@@ -15,8 +15,7 @@ export class OrderResolver {
   }
 
   @Query(() => [Order])
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async returnAllOrders(@Ctx() ctx: Context) {
+  async returnAllOrders(@Ctx() ctx: Context): Promise<Order[]> {
     console.log('ctx.user', ctx.user);
     return await OrderModel.find();
   }

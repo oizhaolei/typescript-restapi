@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 import { Category, CategoryModel } from '../entities/Category';
 import { CategoryInput } from './types/category-input';
+// import { Pagination, PaginationInput } from './types/pagination-input';
 import HttpException from '../HttpException';
 import { logger } from '../utils/logger';
 
@@ -12,10 +13,17 @@ export class CategoryResolver {
   }
 
   @Query(() => [Category])
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async returnAllCategories() {
+  async returnAllCategories(): Promise<Category[]> {
     return await CategoryModel.find();
   }
+
+  // @Query(() => Pagination)
+  // async returnPageCategories(@Arg('data') { skip, limit }: PaginationInput): Promise<Pagination<Category>> {
+  //   const count = await CategoryModel.countDocuments();
+  //   const data = await CategoryModel.find().limit(limit).skip(skip);
+  //   const pagination = new Pagination(count, data);
+  //   return pagination;
+  // }
 
   @Mutation(() => Category)
   async createCategory(@Arg('data') { name, description }: CategoryInput): Promise<Category> {

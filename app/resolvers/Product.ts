@@ -14,8 +14,7 @@ export class ProductResolver {
   }
 
   @Query(() => [Product])
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async returnAllProducts() {
+  async returnAllProducts(): Promise<Product[]> {
     return await ProductModel.find();
   }
 

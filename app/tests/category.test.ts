@@ -88,6 +88,24 @@ describe('Category', () => {
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllCategories.length).toBe(originLength + 1);
     }
+    // {
+    //   const query = `
+    //   query returnPageCategories {
+    //     returnPageCategories(skip:2 limit:2) {
+    //       count，
+    //       data: {
+    //         id
+    //         name
+    //         description
+    //       }
+    //     }
+    //   }`;
+    //   const response = await request.post('/graphql').send({
+    //     query,
+    //   });
+    //   expect(response.status).toBe(200);
+    //   expect(response.body.data.returnAllCategories.length).toBe(originLength + 1);
+    // }
     // u
     {
       const query = `

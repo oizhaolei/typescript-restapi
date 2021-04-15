@@ -28,11 +28,8 @@ class UsersController {
 
   public getProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { user } = req;
-    const { id } = user;
-
     try {
-      const findOneUserData: User = await this.userService.findUserById(id);
-      res.status(200).json({ data: findOneUserData, message: 'findOne' });
+      res.status(200).json({ user });
     } catch (error) {
       next(error);
     }
