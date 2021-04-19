@@ -5,7 +5,7 @@ import Route from '../interfaces/routes.interface';
 class IndexRoute implements Route {
   public path = '/';
   public router = Router();
-  public indexController = new IndexController();
+  public indexController: IndexController = new IndexController();
 
   constructor() {
     this.initializeRoutes();

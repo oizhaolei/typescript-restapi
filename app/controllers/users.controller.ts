@@ -1,7 +1,10 @@
+import bcrypt from 'bcrypt';
+import passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
-import { UserInput } from '../resolvers/types/user-input';
+import { UserInput } from '../entities/types/user-input';
 import { User } from '../entities/User';
 import userService from '../services/users.service';
+import { sign } from '../utils/auth-checker';
 
 class UsersController {
   public userService = new userService();
@@ -67,6 +70,35 @@ class UsersController {
     } catch (error) {
       next(error);
     }
+  };
+
+  public registerUser = async (req: Request, res: Response): Promise<void> => {
+    const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+    const userData: UserInput = {
+      ...req.body,
+      password: hashedPassword,
+    };
+
+    const user: User = await this.userService.createUser(userData);
+
+    const token = sign(user._doc);
+    res.status(200).send({
+      token: token,
+      user,
+    });
+  };
+
+  public authenticateUser = (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    return passport.authenticate('local', function (err, user) {
+      // no async/await because passport works only with callback ..
+      if (err) return next(err);
+      if (!user) {
+        return res.status(401).json({ status: 'error', code: 'unauthorized' });
+      } else {
+        const token = sign(user._doc);
+        res.status(200).send({ token: token });
+      }
+    });
   };
 }
 

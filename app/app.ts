@@ -1,4 +1,3 @@
-import { ApolloServer } from 'apollo-server-express';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
@@ -6,17 +5,12 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
 import mongoose from 'mongoose';
 
 import passport from './utils/passport';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
 import Routes from './interfaces/routes.interface';
-
-import { Context } from './interfaces/context.interface';
-import { verifyToken, authChecker } from './utils/auth-checker';
 
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
@@ -63,33 +57,6 @@ const initializeMongoose = async () => {
   logger.info('🟢 The database is connected.');
 };
 
-const initializeApollo = async (app: express.Express, resolvers: any) => {
-  if (!resolvers || resolvers.length === 0) {
-    return;
-  }
-
-  const schema = await buildSchema({
-    resolvers,
-    authChecker,
-    emitSchemaFile: true,
-    validate: false,
-  });
-
-  const server = new ApolloServer({
-    schema,
-    context: async ({ req }) => {
-      // Get the user token from the headers.
-      const user = await verifyToken(req.headers.authorization || '');
-      // add the user to the context
-      const ctx: Context = {
-        user,
-      };
-      return ctx;
-    },
-  });
-  server.applyMiddleware({ app });
-};
-
 const initializeSwagger = (app: express.Express) => {
   const options = {
     swaggerDefinition: {
@@ -106,12 +73,11 @@ const initializeSwagger = (app: express.Express) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 };
 
-export default async (routes: Routes[], resolvers: any): Promise<express.Express> => {
+export default async (routes: Routes[]): Promise<express.Express> => {
   const app = express();
 
   initializeMiddlewares(app);
   await initializeMongoose();
-  await initializeApollo(app, resolvers);
   initializeRoutes(app, routes);
   initializeSwagger(app);
   initializeErrorHandling(app);

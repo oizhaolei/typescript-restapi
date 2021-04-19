@@ -1,8 +1,6 @@
-import { AuthChecker } from 'type-graphql';
 import jwt from 'jsonwebtoken';
 
 import { jwtOptions } from '../utils/jwt';
-import { Context } from '../interfaces/context.interface';
 import { User } from '../entities/User';
 
 export const sign = (payload: Record<string, unknown>, opts?: Partial<jwt.SignOptions>): string => {
@@ -39,25 +37,4 @@ export const verifyToken = async (authorization: string, opts?: Partial<jwt.Veri
     }
   }
   return User.anonymous;
-};
-
-// create auth checker function
-export const authChecker: AuthChecker<Context> = ({ context: { user } }, roles) => {
-  if (roles.length === 0) {
-    // if `@Authorized()`, check only if user exists
-    return user !== undefined;
-  }
-  // there are some roles defined now
-
-  if (!user) {
-    // and if no user, restrict access
-    return false;
-  }
-  if (user.roles.some(role => roles.includes(role.value))) {
-    // grant access if the roles overlap
-    return true;
-  }
-
-  // no roles matched, restrict access
-  return false;
 };

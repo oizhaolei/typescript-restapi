@@ -15,7 +15,7 @@ describe('Testing Users', () => {
 
   beforeAll(async () => {
     // console.log("1 - beforeAll");
-    app = await App([usersRoute], []);
+    app = await App([usersRoute]);
   });
   afterAll(async () => {
     // console.log("1 - afterAll");

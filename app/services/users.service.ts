@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { UserInput } from '../resolvers/types/user-input';
+import { UserInput } from '../entities/types/user-input';
 import HttpException from '../HttpException';
 import { User, UserModel } from '../entities/User';
 

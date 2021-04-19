@@ -22,7 +22,7 @@ interface IJwtOptions {
 export const jwtOptions: IJwtOptions = {
   privateKey,
   publicKey,
-  issuer: process.env.JWT_ISSUER! || 'graphql-starter',
-  audience: process.env.JWT_AUDIENCE! || 'graphql-starter',
+  issuer: process.env.JWT_ISSUER! || 'typescript-restapi',
+  audience: process.env.JWT_AUDIENCE! || 'typescript-restapi',
   expiresIn: process.env.JWT_EXPIRES_IN! || '7d',
 };
