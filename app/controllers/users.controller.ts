@@ -82,7 +82,7 @@ class UsersController {
     const user: User = await this.userService.createUser(userData);
 
     const token = sign(user._doc);
-    res.status(200).send({
+    res.status(201).send({
       token: token,
       user,
     });

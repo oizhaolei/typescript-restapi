@@ -50,6 +50,47 @@ describe('Testing Users', () => {
       console.log('delete user:', response.body.data);
       userId = response.body.data._id;
     }
+    //register
+    {
+      const response = await request
+        .post('/register')
+        .send({
+          username: 'john2',
+          password: 'john2',
+          email: 'johnx@gmail.com',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+      console.log('response.body:', response.body);
+      expect(response.status).toBe(201);
+      userId = response.body.user._id;
+    }
+    //login
+    let token;
+    {
+      const response = await request
+        .post('/login')
+        .send({
+          email: 'johnx@gmail.com',
+          password: 'john2',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+      console.log('response.body:', response.body);
+      expect(response.status).toBe(200);
+      token = response.body.token;
+    }
+    //profile
+    {
+      const response = await request
+        .get('/profile')
+        .set('Accept', 'application/json')
+        .set('Authorization', 'bearer ' + token)
+        .expect('Content-Type', /json/);
+      console.log('response.body:', response.body);
+      expect(response.status).toBe(200);
+      userId = response.body.token;
+    }
   });
 
   it('mock', () => {

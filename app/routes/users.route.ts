@@ -22,7 +22,7 @@ class UsersRoute implements Route {
     this.router.delete(`${this.path}/:id`, this.usersController.deleteUser);
     this.router.post('/register', this.usersController.registerUser);
     this.router.post('/login', this.usersController.authenticateUser);
-    this.router.get(`${this.path}/profile`, this.authController.authenticateJWT, this.usersController.getProfile);
+    this.router.get('/profile', this.authController.authenticateJWT, this.usersController.getProfile);
   }
 }
 
