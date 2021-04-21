@@ -1,6 +1,5 @@
-import bcrypt from 'bcrypt';
-import passport from 'passport';
 import { NextFunction, Request, Response } from 'express';
+import passport from '../utils/passport';
 import { UserInput } from '../entities/types/user-input';
 import { User } from '../entities/User';
 import userService from '../services/users.service';
@@ -72,11 +71,18 @@ class UsersController {
     }
   };
 
+  public deleteAllUser = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const deletedCount: number = await this.userService.deleteAllUserData();
+      res.status(200).json({ deletedCount });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public registerUser = async (req: Request, res: Response): Promise<void> => {
-    const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
     const userData: UserInput = {
       ...req.body,
-      password: hashedPassword,
     };
 
     const user: User = await this.userService.createUser(userData);
@@ -88,8 +94,8 @@ class UsersController {
     });
   };
 
-  public authenticateUser = (_req: Request, res: Response, next: NextFunction): Promise<void> => {
-    return passport.authenticate('local', function (err, user) {
+  public authenticateUser = (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    return passport.authenticate('local', (err, user) => {
       // no async/await because passport works only with callback ..
       if (err) return next(err);
       if (!user) {
@@ -98,7 +104,7 @@ class UsersController {
         const token = sign(user._doc);
         res.status(200).send({ token: token });
       }
-    });
+    })(req, res, next);
   };
 }
 

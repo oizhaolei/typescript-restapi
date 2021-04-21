@@ -45,6 +45,11 @@ class UserService {
 
     return deleteUserById;
   }
+
+  public async deleteAllUserData(): Promise<number> {
+    const { deletedCount = 0 } = await this.userModel.deleteMany({});
+    return deletedCount;
+  }
 }
 
 export default UserService;

@@ -9,7 +9,7 @@ import { UserModel } from '../entities/User';
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-      const user = await UserModel.findOne({ email: email.toLowerCase() });
+      const user = await UserModel.findOne({ email: email.trim().toLowerCase() });
       if (!user) {
         return done(undefined, false, { message: `email ${email} not found.` });
       }
@@ -29,8 +29,10 @@ passport.use(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: jwtOptions.publicKey,
-      algorithms: ['RS256'],
-    },
+      algorithms: ['RS512'],
+      issuer: jwtOptions.issuer,
+      audience: jwtOptions.audience,
+  },
     async (jwtPayload, done) => {
       try {
         // TODO: remove it

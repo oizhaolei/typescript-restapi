@@ -14,11 +14,12 @@ describe('Testing Users', () => {
   const usersRoute = new UsersRoute();
 
   beforeAll(async () => {
-    // console.log("1 - beforeAll");
+    jest.setTimeout(300000);
+    // // console.log("1 - beforeAll");
     app = await App([usersRoute]);
   });
   afterAll(async () => {
-    // console.log("1 - afterAll");
+    // // console.log("1 - afterAll");
 
     mongoose.disconnect();
   });
@@ -29,40 +30,42 @@ describe('Testing Users', () => {
       const response = await request.get(`${usersRoute.path}`);
       expect(response.status).toBe(200);
     }
-    let userId;
+    // delete all
+    {
+      const response = await request.delete(`${usersRoute.path}/all`).set('Accept', 'application/json').expect('Content-Type', /json/);
+      // console.log('deletedCount:', response.body.deletedCount);
+      expect(response.status).toBe(200);
+      expect(response.body.deletedCount).toBeGreaterThanOrEqual(0);
+    }
+    // create one
     {
       const response = await request
         .post(`${usersRoute.path}`)
         .send({
           username: 'john2',
           password: 'john2',
-          email: 'johnx@gmail.com',
+          email: 'johnx1@gmail.com',
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
+      // console.log('create user:', response.body.data);
       expect(response.status).toBe(201);
-      console.log('create user:', response.body.data);
-      userId = response.body.data._id;
-    }
-    {
-      const response = await request.delete(`${usersRoute.path}/${userId}`).set('Accept', 'application/json').expect('Content-Type', /json/);
-      expect(response.status).toBe(200);
-      console.log('delete user:', response.body.data);
-      userId = response.body.data._id;
     }
     //register
+    let userId;
     {
       const response = await request
         .post('/register')
         .send({
           username: 'john2',
           password: 'john2',
-          email: 'johnx@gmail.com',
+          email: 'johnx2@gmail.com',
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      console.log('response.body:', response.body);
+      // console.log('response.body:', response.body);
       expect(response.status).toBe(201);
+      expect(response.body.token).not.toBeNull();
       userId = response.body.user._id;
     }
     //login
@@ -71,12 +74,12 @@ describe('Testing Users', () => {
       const response = await request
         .post('/login')
         .send({
-          email: 'johnx@gmail.com',
+          email: 'johnx2@gmail.com',
           password: 'john2',
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      console.log('response.body:', response.body);
+      // console.log('response.body:', response.body);
       expect(response.status).toBe(200);
       token = response.body.token;
     }
@@ -88,8 +91,9 @@ describe('Testing Users', () => {
         .set('Authorization', 'bearer ' + token)
         .expect('Content-Type', /json/);
       console.log('response.body:', response.body);
+
       expect(response.status).toBe(200);
-      userId = response.body.token;
+      expect(response.body.user._id).toBe(userId);
     }
   });
 
