@@ -2,27 +2,23 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import mongoose from 'mongoose';
 
 // import passport from './utils/passport';
 import errorMiddleware from './middlewares/error.middleware';
-import { logger, stream } from './utils/logger';
 import Routes from './interfaces/routes.interface';
+import log4js from './utils/logger';
+
+const logger = log4js('app.ts');
 
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
-    app.use(morgan('combined', { stream }));
     app.use(cors({ origin: 'your.domain.com', credentials: true }));
   } else if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev', { stream }));
     app.use(cors({ origin: true, credentials: true }));
   }
-
-  // app.use(passport.initialize());
-  // app.use(passport.session());
 
   app.use(hpp());
   app.use(

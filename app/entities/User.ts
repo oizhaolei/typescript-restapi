@@ -16,7 +16,7 @@ export class User {
   @Property({ required: true })
   password: string;
 
-  @Property({ required: true })
+  @Property({ required: true, unique: true })
   email: string;
 
   @Property({ type: () => Role, default: [] })

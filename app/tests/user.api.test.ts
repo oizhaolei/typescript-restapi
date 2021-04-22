@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import App from '../app';
 import UsersRoute from '../routes/users.route';
+import log4js from '../utils/logger';
+
+const logger = log4js('tests/user.api.test');
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -15,12 +18,9 @@ describe('Testing Users', () => {
 
   beforeAll(async () => {
     jest.setTimeout(300000);
-    // // console.log("1 - beforeAll");
     app = await App([usersRoute]);
   });
   afterAll(async () => {
-    // // console.log("1 - afterAll");
-
     mongoose.disconnect();
   });
 
@@ -33,7 +33,7 @@ describe('Testing Users', () => {
     // delete all
     {
       const response = await request.delete(`${usersRoute.path}/all`).set('Accept', 'application/json').expect('Content-Type', /json/);
-      // console.log('deletedCount:', response.body.deletedCount);
+      logger.debug('deletedCount:', response.body.deletedCount);
       expect(response.status).toBe(200);
       expect(response.body.deletedCount).toBeGreaterThanOrEqual(0);
     }
@@ -49,7 +49,7 @@ describe('Testing Users', () => {
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      // console.log('create user:', response.body.data);
+      logger.debug('create user:', response.body.data);
       expect(response.status).toBe(201);
       userId = response.body.data._id;
     }
@@ -66,7 +66,7 @@ describe('Testing Users', () => {
         .get(`${usersRoute.path}/6080d1b75f96183eb0ee6b2d`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      // console.log('response.body:', response.body);
+      logger.debug('response.body:', response.body);
 
       expect(response.status).toBe(409);
     }
@@ -86,7 +86,7 @@ describe('Testing Users', () => {
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      // console.log('response.body:', response.body);
+      logger.debug('response.body:', response.body);
       expect(response.status).toBe(201);
       expect(response.body.token).not.toBeNull();
       userId = response.body.user._id;
@@ -102,7 +102,7 @@ describe('Testing Users', () => {
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/);
-      // console.log('response.body:', response.body);
+      logger.debug('response.body:', response.body);
       expect(response.status).toBe(200);
       token = response.body.token;
     }
@@ -113,7 +113,7 @@ describe('Testing Users', () => {
         .set('Accept', 'application/json')
         .set('Authorization', 'bearer ' + token)
         .expect('Content-Type', /json/);
-      // console.log('response.body:', response.body);
+      logger.debug('response.body:', response.body);
 
       expect(response.status).toBe(200);
       expect(response.body.user._id).toBe(userId);

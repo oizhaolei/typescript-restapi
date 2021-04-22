@@ -7,7 +7,7 @@
 ## Dependencies
 
  - Typegoose, `@typegoose/typegoose`  A library for defining Mongoose models using TypeScript classes.
- - password
+ - passport
  - java-web-token
 
 
@@ -22,7 +22,4 @@
 ## TODO
 - swagger api      -- OK
 - coverage         -- OK
-- more tests...
-- pagination
-- passport
-- react client
+- passport         -- OK

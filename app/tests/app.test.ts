@@ -8,11 +8,9 @@ import IndexRoute from '../routes/index.route';
 describe('normal', () => {
   let app: express.Express;
   beforeAll(async () => {
-    // console.log("1 - beforeAll");
     app = await App([new IndexRoute()]);
   });
   afterAll(async () => {
-    // console.log("1 - afterAll");
     mongoose.disconnect();
   });
 
