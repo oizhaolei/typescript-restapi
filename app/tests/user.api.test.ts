@@ -38,6 +38,7 @@ describe('Testing Users', () => {
       expect(response.body.deletedCount).toBeGreaterThanOrEqual(0);
     }
     // create one
+    let userId;
     {
       const response = await request
         .post(`${usersRoute.path}`)
@@ -50,7 +51,29 @@ describe('Testing Users', () => {
         .expect('Content-Type', /json/);
       // console.log('create user:', response.body.data);
       expect(response.status).toBe(201);
+      userId = response.body.data._id;
     }
+    // get one
+    {
+      const response = await request.get(`${usersRoute.path}/${userId}`).set('Accept', 'application/json').expect('Content-Type', /json/);
+
+      expect(response.status).toBe(200);
+      expect(response.body.data._id).toBe(userId);
+    }
+    // get one
+    {
+      const response = await request
+        .get(`${usersRoute.path}/6080d1b75f96183eb0ee6b2d`)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/);
+      // console.log('response.body:', response.body);
+
+      expect(response.status).toBe(409);
+    }
+  });
+
+  it('login', async () => {
+    const request = supertest(app);
     //register
     let userId;
     {
@@ -90,7 +113,7 @@ describe('Testing Users', () => {
         .set('Accept', 'application/json')
         .set('Authorization', 'bearer ' + token)
         .expect('Content-Type', /json/);
-      console.log('response.body:', response.body);
+      // console.log('response.body:', response.body);
 
       expect(response.status).toBe(200);
       expect(response.body.user._id).toBe(userId);

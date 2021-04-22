@@ -32,7 +32,7 @@ passport.use(
       algorithms: ['RS512'],
       issuer: jwtOptions.issuer,
       audience: jwtOptions.audience,
-  },
+    },
     async (jwtPayload, done) => {
       try {
         // TODO: remove it
