@@ -4,6 +4,8 @@
 
 ### To start the server, run `npm start`
 
+### To run the testcases, run `npm run test``
+
 ## Dependencies
 
  - Typegoose, `@typegoose/typegoose`  A library for defining Mongoose models using TypeScript classes.
